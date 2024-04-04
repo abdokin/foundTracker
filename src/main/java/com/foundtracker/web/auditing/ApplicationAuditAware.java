@@ -3,7 +3,6 @@ package com.foundtracker.web.auditing;
 import com.foundtracker.web.model.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.NonNullApi;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
