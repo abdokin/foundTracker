@@ -1,9 +1,7 @@
 package com.foundtracker.web.exception;
 
 import com.foundtracker.web.responses.ApiResponse;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
