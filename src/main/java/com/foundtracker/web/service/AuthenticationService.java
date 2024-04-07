@@ -1,12 +1,13 @@
 package com.foundtracker.web.service;
 
-import com.foundtracker.web.requests.RegisterRequest;
+import com.foundtracker.web.dto.RegisterDto;
+import com.foundtracker.web.dto.UserDto;
+import com.foundtracker.web.model.TokenType;
 import com.foundtracker.web.config.JwtService;
-import com.foundtracker.web.requests.LoginRequest;
+import com.foundtracker.web.dto.LoginDto;
 import com.foundtracker.web.responses.LoginResponse;
 import com.foundtracker.web.model.Token;
 import com.foundtracker.web.repository.TokenRepository;
-import com.foundtracker.web.model.TokenType;
 import com.foundtracker.web.model.Role;
 import com.foundtracker.web.model.User;
 import com.foundtracker.web.repository.UserRepository;
@@ -31,28 +32,23 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public LoginResponse register(RegisterRequest request) {
-    return registerWithRole(request,Role.USER);
+  public void register(RegisterDto request) {
+      registerWithRole(request, Role.USER);
   }
-  public LoginResponse registerWithRole(RegisterRequest request, Role role) {
-    var user = User.builder()
-        .firstname(request.getFirstname())
-        .lastname(request.getLastname())
-        .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
-        .role(role)
-        .build();
-    var savedUser = repository.save(user);
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    saveUserToken(savedUser, jwtToken);
-    return LoginResponse.builder()
-        .accessToken(jwtToken)
-            .refreshToken(refreshToken)
-        .build();
+  public void registerIfNotExist(RegisterDto request, Role role) {
+    if (repository.findByEmail(request.getEmail()).isEmpty()) {
+       registerWithRole(request,role);
+    }
+
+  }
+  public void registerWithRole(RegisterDto request, Role role) {
+    var user = RegisterDto.mapToUser(request);
+    user.setRole(role);
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    repository.save(user);
   }
 
-  public LoginResponse authenticate(LoginRequest request) {
+  public LoginResponse authenticate(LoginDto request) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             request.getEmail(),
@@ -66,8 +62,9 @@ public class AuthenticationService {
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
     return LoginResponse.builder()
-        .accessToken(jwtToken)
+            .accessToken(jwtToken)
             .refreshToken(refreshToken)
+            .user(UserDto.mapToUserDto(user))
         .build();
   }
 

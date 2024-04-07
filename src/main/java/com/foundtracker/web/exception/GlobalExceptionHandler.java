@@ -4,6 +4,7 @@ import com.foundtracker.web.responses.ApiResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,9 +19,9 @@ public class GlobalExceptionHandler  {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationExceptions(
+    public ResponseEntity<ApiResponse<?>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
-        ApiResponse errorResponse = ApiResponse.empty("Validation Error");
+        ApiResponse<?> errorResponse = ApiResponse.error("Validation Error");
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
@@ -30,6 +31,12 @@ public class GlobalExceptionHandler  {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e) {
+        ApiResponse<?> errorResponse = ApiResponse.error("Bad Credentials" + e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> handleRuntimeException(RuntimeException e) {
         return new ResponseEntity<>(ApiResponse.error(e.toString()),HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,7 +45,7 @@ public class GlobalExceptionHandler  {
     public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         String errorMessage = e.getMessage();
         String fieldName = extractFieldName(errorMessage);
-        ApiResponse apiResponse =ApiResponse.error("Validation Error");
+        ApiResponse<?> apiResponse =ApiResponse.error("Validation Error");
         apiResponse.addValidationError(fieldName,fieldName+" already exists");
         return new ResponseEntity<>(apiResponse,HttpStatus.BAD_REQUEST);
     }

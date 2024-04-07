@@ -1,4 +1,4 @@
-package com.foundtracker.web.config;
+package com.foundtracker.web.service;
 
 import com.foundtracker.web.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;

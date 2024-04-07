@@ -1,4 +1,4 @@
-package com.foundtracker.web.requests;
+package com.foundtracker.web.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+public class LoginDto {
 
   @NotEmpty(message = "email is required")
   @Email

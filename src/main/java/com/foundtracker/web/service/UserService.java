@@ -1,6 +1,6 @@
 package com.foundtracker.web.service;
 
-import com.foundtracker.web.requests.ChangePasswordRequest;
+import com.foundtracker.web.dto.ChangePasswordDto;
 import com.foundtracker.web.model.User;
 import com.foundtracker.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository repository;
-    public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
+    public void changePassword(ChangePasswordDto request, Principal connectedUser) {
 
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
 

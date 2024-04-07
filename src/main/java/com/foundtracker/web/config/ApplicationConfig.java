@@ -1,6 +1,5 @@
 package com.foundtracker.web.config;
 
-import com.foundtracker.web.auditing.ApplicationAuditAware;
 import com.foundtracker.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -35,10 +34,7 @@ public class ApplicationConfig {
     return authProvider;
   }
 
-  @Bean
-  public AuditorAware<Integer> auditorAware() {
-    return new ApplicationAuditAware();
-  }
+
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {

@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
+@Table(name = "_user")
 public class User implements UserDetails {
   @Id
   @GeneratedValue
@@ -29,7 +29,7 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
   private List<Token> tokens;
 
   @Override
@@ -66,4 +66,6 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
+
 }

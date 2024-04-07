@@ -30,4 +30,5 @@ public class Token {
   @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
   @JoinColumn(name = "user_id")
   public User user;
+
 }
