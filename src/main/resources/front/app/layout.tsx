@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* {JSON.stringify(cookies().getAll())} */}
         {children}
-        <Toaster position="top-right" />
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );
