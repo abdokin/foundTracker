@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import static com.foundtracker.web.model.Role.ADMIN;
+import static com.foundtracker.web.model.Role.RECEPTIONNAIRE;
 import static com.foundtracker.web.model.Role.USER;
 
 @SpringBootApplication
@@ -29,12 +29,12 @@ public class Application {
 					.email("admin@mail.com")
 					.password("password")
 					.build();
-			service.registerIfNotExist(admin, ADMIN);
+			service.registerIfNotExist(admin, RECEPTIONNAIRE);
 
 			var manager = RegisterDto.builder()
-					.firstname("Manager")
+					.firstname("USER")
 					.lastname("Admin")
-					.email("manager@mail.com")
+					.email("client@mail.com")
 					.password("password")
 					.build();
 			service.registerIfNotExist(manager, USER);
