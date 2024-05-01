@@ -1,8 +1,7 @@
 package com.foundtracker.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.foundtracker.web.model.Role;
 import com.foundtracker.web.model.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -16,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(name = "RegisterInput")
 public class RegisterDto {
     @NotBlank(message = "First name is required")
     private String firstname;
