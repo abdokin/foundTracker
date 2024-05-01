@@ -2,7 +2,6 @@ package com.foundtracker.web.service;
 
 import com.foundtracker.web.dto.RegisterDto;
 import com.foundtracker.web.dto.UserDto;
-import com.foundtracker.web.model.TokenType;
 import com.foundtracker.web.config.JwtService;
 import com.foundtracker.web.dto.LoginDto;
 import com.foundtracker.web.responses.LoginResponse;
@@ -72,7 +71,6 @@ public class AuthenticationService {
     var token = Token.builder()
         .user(user)
         .token(jwtToken)
-        .tokenType(TokenType.BEARER)
         .expired(false)
         .revoked(false)
         .build();
