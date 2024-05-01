@@ -1,6 +1,7 @@
 package com.foundtracker.web.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(name="ApiResponse")
 public class ApiResponse<T> {
     private boolean success = false;
     private String message;
