@@ -14,3 +14,11 @@
 * BCrypt
 * Maven
 
+
+## Run project using mvnw
+```
+    mvn spring-boot:run
+```
+
+## Important
+    1. Update JWT SECRET 
