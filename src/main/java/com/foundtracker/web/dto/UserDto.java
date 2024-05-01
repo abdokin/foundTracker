@@ -2,6 +2,7 @@ package com.foundtracker.web.dto;
 
 import com.foundtracker.web.model.Role;
 import com.foundtracker.web.model.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -17,6 +18,7 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(name = "User")
 public class UserDto {
 
     private Integer id;
