@@ -12,10 +12,10 @@ import static com.foundtracker.web.model.Role.USER;
 
 @SpringBootApplication
 //@EnableJpaAuditing(auditorAwareRef = "auditorAware")
-public class SecurityApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SecurityApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 	@Bean
