@@ -40,8 +40,8 @@ public class ItemController {
     public ApiResponse<Item> addItem(@ModelAttribute @Valid CreateItemDto item) throws IOException {
         return ApiResponse.success(itemService.save(item),"item added successfully");
     }
-        @PatchMapping("/{id}/edit")
-    public ApiResponse<Item> editItem(@PathVariable Long id, @RequestBody EditItemDto itemDto) {
+        @PatchMapping(value = "/{id}/edit",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ApiResponse<Item> editItem(@PathVariable Long id, @ModelAttribute @Valid EditItemDto itemDto) {
         return ApiResponse.success(itemService.edit(id, itemDto), "Item edited successfully");
     }
 }
