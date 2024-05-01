@@ -21,6 +21,7 @@ application:
       refresh-token:
         expiration: 604800000 # 7 days
 server:
+  port: 8000
   error:
     include-message: always
     include-binding-errors: always
