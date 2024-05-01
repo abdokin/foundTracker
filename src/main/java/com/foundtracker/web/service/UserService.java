@@ -1,14 +1,20 @@
 package com.foundtracker.web.service;
 
 import com.foundtracker.web.dto.ChangePasswordDto;
+import com.foundtracker.web.dto.UserDto;
 import com.foundtracker.web.model.User;
 import com.foundtracker.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +22,11 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository repository;
+
+    public Page<UserDto> getAll(Pageable pageable) {
+        Page<User> users = repository.findAll(pageable);
+        return  users.map(UserDto::mapToUserDto);
+    }
     public void changePassword(ChangePasswordDto request, Principal connectedUser) {
 
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
