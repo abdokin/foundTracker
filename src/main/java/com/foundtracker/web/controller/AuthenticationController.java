@@ -5,6 +5,7 @@ import com.foundtracker.web.dto.RegisterDto;
 import com.foundtracker.web.responses.LoginResponse;
 import com.foundtracker.web.service.AuthenticationService;
 import com.foundtracker.web.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -17,18 +18,17 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication")
 public class AuthenticationController {
 
   private final AuthenticationService service;
 
   @PostMapping("/register")
-  @ResponseStatus(code = HttpStatus.ACCEPTED)
-  public ApiResponse<LoginResponse> register(@RequestBody @Valid RegisterDto request) {
+  public ApiResponse<?> register(@RequestBody @Valid RegisterDto request) {
     service.register(request);
     return ApiResponse.success(null,"User register successfully");
   }
   @PostMapping("/authenticate")
-  @ResponseStatus(code = HttpStatus.OK)
   public ApiResponse<LoginResponse> authenticate(@RequestBody @Valid LoginDto request) {
     return ApiResponse.success(service.authenticate(request),"Welcome Back");
   }
