@@ -1,6 +1,5 @@
 package com.foundtracker.web.dto;
 
-import com.foundtracker.web.model.Item;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;

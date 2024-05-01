@@ -31,10 +31,6 @@ public class ApiResponse<T> {
         private String message;
     }
 
-    public static <T> ApiResponse<T> empty(String message) {
-        return success(null, message);
-    }
-
     public static <T> ApiResponse<T> success(T data, String message) {
         return ApiResponse.<T>builder()
                 .message(message)
