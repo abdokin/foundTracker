@@ -26,11 +26,5 @@ public class EditItemDto {
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime foundDateTime;
 
-        public  static Item mapToItem(EditItemDto dto) {
-            return Item.builder()
-                .name(dto.name)
-                .description(dto.description)
-                .foundDateTime(dto.foundDateTime)
-                .build();
-        }
+
 }

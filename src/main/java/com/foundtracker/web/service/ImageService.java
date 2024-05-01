@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +52,7 @@ public class ImageService {
     }
 
     private String generateUniqueFilename(String extension) {
-        return UUID.randomUUID().toString() + "." + extension;
+        return UUID.randomUUID() + "." + extension;
     }
 
     private String getFileExtension(String filename) {
@@ -70,7 +69,7 @@ public class ImageService {
         return validExtensions.contains(extension.toLowerCase());
     }
 
-    public Resource loadImage(String filename) throws MalformedURLException, MalformedURLException {
+    public Resource loadImage(String filename) throws MalformedURLException {
         Path file = storageLocation.resolve(filename);
         Resource resource = new UrlResource(file.toUri());
         if (resource.exists() || resource.isReadable()) {

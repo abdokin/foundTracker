@@ -1,10 +1,8 @@
 package com.foundtracker.web.validator;
 
-import com.foundtracker.web.validator.ImagesValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import jakarta.validation.ReportAsSingleViolation;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.annotation.*;
 
