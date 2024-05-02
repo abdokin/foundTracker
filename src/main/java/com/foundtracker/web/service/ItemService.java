@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +29,13 @@ public class ItemService {
         item.setImages(images);
         return item;
     }
-    public Page<Item> findAll(Pageable pageAble) {
-        return itemRepository.findAll(pageAble);
+    public Page<Item> findAll(Pageable pageable) {
+        Page<Item> items = itemRepository.findAll(pageable);
+        items.map(item -> {
+            item.setImages(item.getImages().stream().peek(image -> image.setItem(null)).collect(Collectors.toList()));
+            return item;
+        });
+        return items;
     }
     public Item findById(Long id) {
         return itemRepository.findById(id).orElse(null);
