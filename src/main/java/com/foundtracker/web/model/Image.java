@@ -18,7 +18,7 @@ public class Image {
 
     private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 }
