@@ -28,6 +28,7 @@ export async function login(
     throw error;
   }
 }
+
 export async function register(
   values: RegisterInput
 ): Promise<ApiResponse<AuthResponse>> {
