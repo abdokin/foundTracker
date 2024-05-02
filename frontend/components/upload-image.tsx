@@ -52,10 +52,6 @@ export default function ImagesUpload({ field, addImages }: {
     useEffect(() => {
         addImages(images)
     }, [images]);
-    
-    // useEffect(() => {
-    //     field.value = images.map(file => URL.createObjectURL(file));;
-    // }, [updateImage, images])
     return (
         <div>
             <div className="flex flex-wrap items-center gap-1 p-2 overflow-x-scolll">
@@ -70,8 +66,7 @@ export default function ImagesUpload({ field, addImages }: {
             <div
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
-                style={{ width: '100%', height: '200px', border: '2px dashed #ccc', textAlign: 'center', paddingTop: '50px' }}
-            >
+                className="w-full h-[200px] border-2 border-dashed text-center rounded-md pt-16">
                 <p>Drag & Drop Images Here</p>
                 <input
                     type="file"
