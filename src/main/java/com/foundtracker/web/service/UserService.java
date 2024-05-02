@@ -1,6 +1,7 @@
 package com.foundtracker.web.service;
 
 import com.foundtracker.web.dto.ChangePasswordDto;
+import com.foundtracker.web.dto.EditProfileDto;
 import com.foundtracker.web.dto.UserDto;
 import com.foundtracker.web.model.User;
 import com.foundtracker.web.repository.UserRepository;
@@ -41,6 +42,14 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 
         // save the new password
+        repository.save(user);
+    }
+
+    public void editProfile(EditProfileDto input) {
+        User user = repository.findById(input.getId()).orElseThrow(); // TODO :
+        user.setEmail(input.getEmail());
+        user.setFirstname(input.getFirstname());
+        user.setLastname(input.getLastname());
         repository.save(user);
     }
 }
