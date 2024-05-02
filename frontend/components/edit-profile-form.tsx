@@ -19,16 +19,16 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { EditProfileInput } from "@/lib/types";
+import { EditProfileInput, User } from "@/lib/types";
 import { toast } from "sonner";
 
 
-export default function EditProfileForm() {
+export default function EditProfileForm({ user }: { user: User }) {
     const form = useForm<EditProfileInput>({
         defaultValues: {
-            firstname: "",
-            lastname: "",
-            email: ""
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
         },
     });
     async function onSubmit(values: EditProfileInput) {

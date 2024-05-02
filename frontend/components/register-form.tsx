@@ -23,6 +23,7 @@ import { RegisterInput } from "@/lib/types";
 import { register } from "@/lib/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 export default function RegisterForm() {
@@ -65,7 +66,7 @@ export default function RegisterForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Card className="w-full max-w-sm mx-auto">
+        <Card className="w-full max-w-md mx-auto">
           <CardHeader>
             <CardTitle className="text-2xl">Create Account</CardTitle>
             <CardDescription>
@@ -134,8 +135,14 @@ export default function RegisterForm() {
               />
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col">
             <Button className="w-full">Sign up</Button>
+            <div className="mt-4 text-center text-sm">
+              Already have an account?{" "}
+              <Link href="/auth/login" className="underline">
+                Sign In
+              </Link>
+            </div>
           </CardFooter>
         </Card>
       </form>

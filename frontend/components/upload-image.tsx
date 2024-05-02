@@ -54,7 +54,7 @@ export default function ImagesUpload({ field, addImages }: {
     }, [images]);
     return (
         <div>
-            <div className="flex flex-wrap items-center gap-1 p-2 overflow-x-scolll">
+            {images.length > 0 && <div className="flex flex-wrap items-center gap-1 p-2 overflow-x-scolll">
                 {images.map((image, index) => (
                     <div key={index} className="relative border">
 
@@ -62,25 +62,28 @@ export default function ImagesUpload({ field, addImages }: {
                         <button className="absolute top-0 right-0 bg-black text-white" onClick={() => handleRemoveImage(index)}><XIcon size={18} /></button>
                     </div>
                 ))}
-            </div>
-            <div
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                className="w-full h-[200px] border-2 border-dashed text-center rounded-md pt-16">
-                <p>Drag & Drop Images Here</p>
-                <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    style={{ display: 'none' }}
-                    name={field.name}
-                    onBlur={field.onBlur}
-                    disabled={field.disabled}
-                    onChange={handleFileInputChange}
-                    ref={fileInputRef}
-                />
-                <Button type="button" onClick={handleUploadButtonClick} size='sm'>Upload</Button>
-            </div>
+            </div>}
+            {images.length > 0 && <Button type="button" onClick={handleUploadButtonClick} size='sm'>Select more Images</Button>}
+            {images.length == 0 &&
+                <div
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    className="w-full h-[200px] border-2 border-dashed text-center rounded-md pt-16">
+                    <p>Drag & Drop Images Here</p>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        style={{ display: 'none' }}
+                        name={field.name}
+                        onBlur={field.onBlur}
+                        disabled={field.disabled}
+                        onChange={handleFileInputChange}
+                        ref={fileInputRef}
+                    />
+                    <Button type="button" onClick={handleUploadButtonClick} size='sm'>Upload</Button>
+                </div>
+            }
         </div>
     );
 };

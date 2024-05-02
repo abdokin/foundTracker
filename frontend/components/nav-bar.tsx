@@ -26,8 +26,8 @@ export default function NavBar({ user }: { user: User }) {
             <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                 {links.map((link) => (
                     <Link key={link.path} href={link.path} className={cx(
-                        path === link.path ? "bg-white px-4 py-2 rounded-md text-primary" : " hover:text-foreground",
-                        "text-bold text-lg text-foreground"
+                        path === link.path ? "bg-white px-4 py-2 rounded-md text-primary" : " text-white",
+                        "text-bold text-lg hover:underline"
                     )}>
                         {link.label}
                     </Link>
@@ -48,8 +48,8 @@ export default function NavBar({ user }: { user: User }) {
                     <nav className="grid gap-6 text-lg font-medium">
                         {links.map((link) => (
                             <Link key={link.path} href={link.path} className={cx(
-                                path === link.path ? "text-foreground" : "text-muted-foreground transition-colors hover:text-foreground",
-                                "text-bold text-lg"
+                                path === link.path ? "bg-white px-4 py-2 rounded-md text-primary" : " text-white",
+                                "text-bold text-lg hover:underline"
                             )}>
                                 {link.label}
 

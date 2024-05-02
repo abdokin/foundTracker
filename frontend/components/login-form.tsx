@@ -22,6 +22,7 @@ import {
 import { LoginInput } from "@/lib/types";
 import { login } from "@/lib/auth";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function LoginForm() {
   const form = useForm<LoginInput>({
@@ -97,8 +98,14 @@ export default function LoginForm() {
               />
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col">
             <Button className="w-full">Sign in</Button>
+            <div className="mt-4 text-center text-sm">
+              Don&apos;t have an account?{" "}
+              <Link href="/auth/register" className="underline">
+                Sign up
+              </Link>
+            </div>
           </CardFooter>
         </Card>
       </form>
