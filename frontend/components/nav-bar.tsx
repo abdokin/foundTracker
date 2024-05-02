@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserNav } from "@/components/user-nav";
 import { User } from "@/lib/types";
 import { usePathname } from "next/navigation";
+import { cx } from "class-variance-authority";
 
 export default function NavBar({ user }: { user: User }) {
     const path = usePathname();
@@ -21,10 +22,13 @@ export default function NavBar({ user }: { user: User }) {
     ];
 
     return (
-        <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+        <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-primary  px-4 md:px-6">
             <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                 {links.map((link) => (
-                    <Link key={link.path} href={link.path} className={path === link.path ? "text-foreground" : "text-muted-foreground transition-colors hover:text-foreground"}>
+                    <Link key={link.path} href={link.path} className={cx(
+                        path === link.path ? "bg-white px-4 py-2 rounded-md text-primary" : " hover:text-foreground",
+                        "text-bold text-lg text-foreground"
+                    )}>
                         {link.label}
                     </Link>
                 ))}
@@ -43,7 +47,10 @@ export default function NavBar({ user }: { user: User }) {
                 <SheetContent side="left">
                     <nav className="grid gap-6 text-lg font-medium">
                         {links.map((link) => (
-                            <Link key={link.path} href={link.path} className={path === link.path ? "text-foreground" : "text-muted-foreground transition-colors hover:text-foreground"}>
+                            <Link key={link.path} href={link.path} className={cx(
+                                path === link.path ? "text-foreground" : "text-muted-foreground transition-colors hover:text-foreground",
+                                "text-bold text-lg"
+                            )}>
                                 {link.label}
 
                             </Link>
