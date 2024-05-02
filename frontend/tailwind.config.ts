@@ -19,13 +19,13 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "black",
+        input: "#1a476e",
+        ring: "#1a476e",
+        background: "white",
+        foreground: "#f9f9f9",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#1a476e",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -38,7 +38,7 @@ const config = {
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          foreground: "#777777",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
