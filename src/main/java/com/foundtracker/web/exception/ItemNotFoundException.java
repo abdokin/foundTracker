@@ -12,6 +12,4 @@ public class ItemNotFoundException extends RuntimeException {
 
         this.itemId = itemId;
     }
-
-
 }
