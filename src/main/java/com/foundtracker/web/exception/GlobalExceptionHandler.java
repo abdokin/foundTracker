@@ -19,17 +19,24 @@ public class GlobalExceptionHandler  {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<?>> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiResponse<?>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         ApiResponse<?> errorResponse = ApiResponse.error("Validation Error");
         ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
+            String fieldName = null;
+            String errorMessage = null;
+            if (error instanceof FieldError) {
+                fieldName = ((FieldError) error).getField();
+                errorMessage = error.getDefaultMessage();
+            }
+            if (fieldName != null && fieldName.equals("images")) {
+                errorMessage = "Invalid image format or no images provided";
+            }
             errorResponse.addValidationError(fieldName, errorMessage);
         });
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadCredentialsException.class)
