@@ -1,11 +1,13 @@
 package com.foundtracker.web.controller;
 
 import com.foundtracker.web.dto.ChangePasswordDto;
+import com.foundtracker.web.dto.EditProfileDto;
 import com.foundtracker.web.dto.UserDto;
 import com.foundtracker.web.model.User;
 import com.foundtracker.web.responses.ApiResponse;
 import com.foundtracker.web.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +23,18 @@ public class ProfileController {
 
     @PatchMapping("/change-password")
     public ApiResponse<?> changePassword(
-            @RequestBody ChangePasswordDto request,
+            @RequestBody @Valid  ChangePasswordDto request,
             Principal connectedUser) {
         service.changePassword(request, connectedUser);
         return ApiResponse.success(null,"Password Changed Successfully");
+    }
+
+    @PatchMapping("/update-info")
+    public ApiResponse<?> updateInfo(
+            @RequestBody @Valid EditProfileDto input
+            ) {
+        service.editProfile(input);
+        return ApiResponse.success(null,"Profile Updated Successfully");
     }
 
     @GetMapping("/current-user")
