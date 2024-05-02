@@ -21,7 +21,7 @@ export default async function Dashboard({
         pageSize: searchParams?.pageSize ?? 10,
     });
     return (
-        <main className="flex  items-start ">
+        <main className="flex items-start ">
             <ItemFilters />
             <div className="px-2">
                 <div className="flex justify-end py-4">
