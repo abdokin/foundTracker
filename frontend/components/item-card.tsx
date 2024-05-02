@@ -4,7 +4,6 @@ import { Item } from "@/lib/types";
 import { useState } from "react";
 import Link from "next/link";
 import { cx } from "class-variance-authority";
-import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 
 
@@ -47,7 +46,7 @@ export default function ItemCard({ item }: { item: Item }) {
 
 
                 <Link href={`/products/${item.name}`}>
-                    <Button size={"sm"} variant={'outline'}>
+                    <Button size={"sm"}>
                         Details
                     </Button>
                 </Link>
