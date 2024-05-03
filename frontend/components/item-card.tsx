@@ -1,13 +1,12 @@
 "use client"
 import { API_URL } from "@/lib/constants";
-import { Item } from "@/lib/types";
+import { Item, User } from "@/lib/types";
 import { useState } from "react";
 import Link from "next/link";
 import { cx } from "class-variance-authority";
 import { Button } from "./ui/button";
 
-
-export default function ItemCard({ item }: { item: Item }) {
+export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boolean }) {
     const [currentImage, setCurrentImage] = useState(
         item.images[0]
     );
@@ -45,11 +44,23 @@ export default function ItemCard({ item }: { item: Item }) {
                 <div className="font-light text-sm pb-4">{item.description.slice(0, 200)}</div>
 
 
-                <Link href={`/products/${item.name}`}>
-                    <Button size={"sm"}>
-                        Details
-                    </Button>
-                </Link>
+                <div className="flex items-center gap-2">
+                    <Link href={`/products/${item.name}`}>
+                        <Button size={"sm"}>
+                            Details
+                        </Button>
+                    </Link>
+                    <Link href={`/dashboard/reclamations/create/${item.id}/`}>
+                        <Button size={"sm"}>
+                            Claim
+                        </Button>
+                    </Link>
+                    {isAdmin && <Link href={`/products/${item.name}`}>
+                        <Button size={"sm"} variant={'destructive'}>
+                            Delete
+                        </Button>
+                    </Link>}
+                </div>
             </div>
         </div>
     );
