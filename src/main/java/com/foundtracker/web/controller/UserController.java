@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/management/users")
 @RequiredArgsConstructor
-@Tag(name = "Management")
+@Tag(name = "User Management")
 public class UserController {
     final UserService userService;
     @GetMapping("/")
