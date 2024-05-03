@@ -58,13 +58,12 @@ public class ImageService {
     private String getFileExtension(String filename) {
         int lastDotIndex = filename.lastIndexOf(".");
         if (lastDotIndex == -1 || lastDotIndex == filename.length() - 1) {
-            return ""; // No extension or filename ends with a dot
+            return "";
         }
         return filename.substring(lastDotIndex + 1);
     }
 
     private boolean isValidImageExtension(String extension) {
-        // You can define your list of valid image extensions here
         List<String> validExtensions = List.of("jpg", "jpeg", "png", "gif","webp");
         return validExtensions.contains(extension.toLowerCase());
     }
