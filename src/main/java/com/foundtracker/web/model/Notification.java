@@ -1,15 +1,12 @@
 package com.foundtracker.web.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,16 +14,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Notifications {
+public class Notification {
     @Id
     @GeneratedValue
     private int id;
-    private String title;
+    @Column(nullable = false,length = 300) // MAX len
     private String message;
+    private LocalDateTime receivedAt;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @CreatedBy
-    private String sendBy;
+    @ManyToOne
+    @JoinColumn(name = "reclamation_id")
+    private Reclamation reclamation;
+
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id")
+    public User user;
 
 }
