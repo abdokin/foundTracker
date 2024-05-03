@@ -15,20 +15,16 @@ import java.net.MalformedURLException;
 @RestController
 @RequestMapping("/api/v1/images")
 @RequiredArgsConstructor
-@Tag(name = "Management")
+@Tag(name = "Images")
 public class ImageController {
     private final ImageService imageService;
-    //    @PostMapping("/upload")
-    //    public String uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-    //        return imageService.storeImage(file);
-    //    }
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> viewImage(@PathVariable String filename) throws MalformedURLException {
         Resource resource = imageService.loadImage(filename);
 
         return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG) // Modify according to your image type
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline") // Specify inline content
+                .contentType(MediaType.IMAGE_JPEG)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline")
                 .body(resource);
     }
 
