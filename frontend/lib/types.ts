@@ -17,6 +17,11 @@ export type ResetPasswordInput = {
   confirmationPassword: string
 }
 
+export type CreateReclamationInput = {
+  description: string;
+  docs: File[];
+}
+
 export type AddItemInput = {
   name: string,
   description: string;
@@ -38,6 +43,11 @@ export type ApiResponse<T> = {
   }[];
   data: T;
 };
+
+export type Notification = {
+  id: string,
+  receivedAt: string,
+}
 
 export type User = {
   id: number;
