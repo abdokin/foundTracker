@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { EditProfileInput, User } from "@/lib/types";
 import { toast } from "sonner";
+import { updateProfileInfo } from "@/lib/profile-management";
 
 
 export default function EditProfileForm({ user }: { user: User }) {
@@ -32,8 +33,29 @@ export default function EditProfileForm({ user }: { user: User }) {
         },
     });
     async function onSubmit(values: EditProfileInput) {
-        toast.success("Not Implemented");
-        console.log(values);
+        const res = await updateProfileInfo(values);
+        console.log(values, res);
+        if (!res.success) {
+            if (res.errors) {
+                res.errors.map((it) => {
+                    // @ts-ignore
+                    form.setError(it.field, {
+                        message: it.message,
+                    });
+                });
+            }
+            toast.error(res.message, {
+                description: res.timestamp,
+            });
+        } else {
+            toast.success(res.message, {
+                description: res.timestamp,
+                action: {
+                    label: "undo",
+                    onClick: () => console.log("Undo"),
+                },
+            });
+        }
     }
     return (
         <Form {...form}>
