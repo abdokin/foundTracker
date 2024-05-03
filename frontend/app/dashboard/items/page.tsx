@@ -5,6 +5,10 @@ import ItemCard from "@/components/item-card"
 import ServerPagination from "@/components/pagination"
 import { ItemFilters } from "@/components/item-filters";
 import AddItemForm from "@/components/add-item-form";
+import { cookies } from "next/headers";
+import { User } from "@/lib/types";
+import ListItems from "@/components/list-items";
+
 
 export default async function Dashboard({
     searchParams,
@@ -20,30 +24,11 @@ export default async function Dashboard({
         pageNumber: searchParams?.page ?? 0,
         pageSize: searchParams?.pageSize ?? 10,
     });
+    const user: User = JSON.parse(cookies().get("current_user")?.value!!);
     return (
         <main className="flex items-start ">
             <ItemFilters />
-            <div className="px-2">
-                {items.data.content.length > 0 && <>
-                    <div className="flex justify-end py-4">
-                        <AddItemForm />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4 ">
-                        {items.data.content.map(it => <ItemCard key={it.id} item={it} />)}
-                    </div>
-                    <div className="flex items-center p-4">
-                        <ServerPagination data={items.data.pageable} totalPages={items.data.totalPages} />
-                        <div className="text-xs text-muted-foreground">
-                            Showing <strong>1-{items.data.pageable.pageSize}</strong> of <strong>{items.data.totalElements}</strong>{" "}
-                            products
-                        </div>
-                    </div>
-                </>}
-                {items.data.content.length == 0 && <div className="p-16">
-                    <h1 className="text-xl mx-auto text-center">No Items Found <AddItemForm /></h1>
-                </div>}
-
-            </div>
+            <ListItems items={items} isAdmin={user.role == "RECE"} />
         </main >
     )
 }
