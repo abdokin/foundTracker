@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(name = "EditProfileInput")
 public class EditProfileDto {
-    private  int id;
     @NotBlank(message = "First name is required")
     private String firstname;
     @NotBlank(message = "Last name is required")
