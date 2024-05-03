@@ -4,6 +4,7 @@ import { API_URL } from "./constants";
 import { AddItemInput, ApiResponse, Item, Page, Pagination } from "./types";
 import assert from "assert";
 import { revalidatePath } from "next/cache";
+import { cleanCookies } from "./auth";
 
 
 
@@ -14,7 +15,7 @@ export async function getAllItems(
 
     assert(access_token && access_token.value != ""); // it always should exist
     try {
-        const response = await fetch(API_URL + `/management/items?page=${values.pageNumber}&size=${values.pageSize}`, {
+        const response = await fetch(API_URL + `/items?page=${values.pageNumber}&size=${values.pageSize}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -42,7 +43,7 @@ export async function AddItem(values: FormData): Promise<ApiResponse<Item>> {
 
     try {
 
-        const response = await fetch(API_URL + "/management/items/create", {
+        const response = await fetch(API_URL + "/items/create", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${access_token?.value}`,
