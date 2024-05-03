@@ -11,7 +11,6 @@ import static com.foundtracker.web.model.Role.RECEPTIONNAIRE;
 import static com.foundtracker.web.model.Role.USER;
 
 @SpringBootApplication
-//@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class Application {
 
 	public static void main(String[] args) {
