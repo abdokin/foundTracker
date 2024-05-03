@@ -41,7 +41,7 @@ public class AuthenticationService {
 
   }
   public void registerWithRole(RegisterDto request, Role role) {
-    var user = RegisterDto.mapToUser(request);
+    var user = RegisterDto.mapToDto(request);
     user.setRole(role);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     repository.save(user);
