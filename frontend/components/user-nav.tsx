@@ -36,7 +36,10 @@ export function UserNav({ user }: { user: User }) {
               {user.firstname} , {user.lastname}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {user.email}
+              {user.email} 
+            </p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {user.role} 
             </p>
           </div>
         </DropdownMenuLabel>
