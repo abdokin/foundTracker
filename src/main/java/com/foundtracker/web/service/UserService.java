@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +22,14 @@ import java.security.Principal;
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+
 
     public Page<UserDto> getAll(Pageable pageable) {
-        Page<User> users = repository.findAll(pageable);
+        Page<User> users = userRepository.findAll(pageable);
         return  users.map(UserDto::mapToUserDto);
     }
+
     public void changePassword(ChangePasswordDto request, Principal connectedUser) {
 
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
@@ -42,14 +47,30 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 
         // save the new password
-        repository.save(user);
+        userRepository.save(user);
     }
-
-    public void editProfile(EditProfileDto input) {
-        User user = repository.findById(input.getId()).orElseThrow(); // TODO :
+    public  User getCurrentUser() throws IllegalStateException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        if (currentUser == null) {
+            throw new IllegalStateException("Current user is null");
+        }
+        currentUser.setTokens(null);
+        currentUser.setItems(null);
+        currentUser.setReclamations(null);
+        return currentUser;
+    }
+    public UserDto editProfile(EditProfileDto input) {
+        User user = userRepository.findById(getCurrentUser().getId()).orElseThrow(); // TODO :
         user.setEmail(input.getEmail());
         user.setFirstname(input.getFirstname());
         user.setLastname(input.getLastname());
-        repository.save(user);
+        userRepository.save(user);
+        updateAuthentication(user);
+        return UserDto.mapToUserDto(user);
+    }
+    private void updateAuthentication(User updatedUser) {
+        Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(updatedUser, updatedUser.getPassword(), ((UserDetails) updatedUser).getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
     }
 }
