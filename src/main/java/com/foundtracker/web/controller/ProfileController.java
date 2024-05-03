@@ -30,11 +30,8 @@ public class ProfileController {
     }
 
     @PatchMapping("/update-info")
-    public ApiResponse<?> updateInfo(
-            @RequestBody @Valid EditProfileDto input
-            ) {
-        service.editProfile(input);
-        return ApiResponse.success(null,"Profile Updated Successfully");
+    public ApiResponse<UserDto> updateInfo(@RequestBody @Valid EditProfileDto input) {
+        return ApiResponse.success(service.editProfile(input),"Profile Updated Successfully");
     }
 
     @GetMapping("/current-user")
