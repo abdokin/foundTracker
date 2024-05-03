@@ -27,7 +27,7 @@ public class RegisterDto {
     @NotBlank(message = "password is required")
     @Size(min = 3, max = 30, message = "password must be between 3 and 30 characters")
     private String password;
-    public static User mapToUser(RegisterDto registerDto) {
+    public static User mapToDto(RegisterDto registerDto) {
         return User.builder()
                 .firstname(registerDto.getFirstname())
                 .lastname(registerDto.getLastname())
@@ -35,4 +35,5 @@ public class RegisterDto {
                 .password(registerDto.getPassword())
                 .build();
     }
+
 }
