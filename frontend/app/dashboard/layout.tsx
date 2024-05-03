@@ -14,6 +14,7 @@ export default function DashboardLayout({
     <div className="flex min-h-screen w-full flex-col">
       
       <NavBar user={user} />
+      
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col bg-muted/40  p-4">
         {children}
       </main>
