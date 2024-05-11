@@ -6,12 +6,13 @@ import Link from "next/link";
 import { cx } from "class-variance-authority";
 import { Button } from "./ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
+import CreateReclamationFrom from "./create-reclamation";
 
 export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boolean }) {
-    const [currentImage, setCurrentImage] = useState<Image>(
-        item.images[0]
-    );
-    const currentImageUrl = API_URL + "/images/" + currentImage?.imageUrl;
+    // const [currentImage, setCurrentImage] = useState<Image>(
+    //     item.images[0]
+    // );
+    // const currentImageUrl = API_URL + "/files/" + currentImage?.imageUrl;
     function formatDateForHuman(dateString: string) {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
@@ -26,13 +27,13 @@ export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boole
                 <Carousel>
                     <CarouselContent>
                         {item.images.map((it, index) => <CarouselItem key={index}>
-                            <img className="h w-full object-cover max-h-56" src={API_URL + "/images/" + it?.imageUrl} alt={item.name} />
+                            <img className="h w-full object-cover max-h-56" src={API_URL + "/files/" + it?.imageUrl} alt={item.name} />
                         </CarouselItem>)}
                     </CarouselContent>
 
                 </Carousel>
             </div>
-            <div className="flex overflow-x-auto gap-2 px-4 pt-2">
+            {/* <div className="flex overflow-x-auto gap-2 px-4 pt-2">
                 {item.images.map((it, index) => (
                     <ImageSelect
                         key={index}
@@ -42,7 +43,7 @@ export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boole
                         setActive={() => setCurrentImage(it)}
                     />
                 ))}
-            </div>
+            </div> */}
 
             <div className="flex flex-col px-4 pb-2">
                 <div className="py-2 flex  items-center  justify-between">
@@ -63,6 +64,7 @@ export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boole
                             Claim
                         </Button>
                     </Link>
+                    <CreateReclamationFrom objetId={item.id} />
                     {isAdmin && <Link href={`/products/${item.name}`}>
                         <Button size={"sm"} variant={'destructive'}>
                             Delete

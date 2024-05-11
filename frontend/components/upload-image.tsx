@@ -63,7 +63,7 @@ export default function ImagesUpload({ field, addImages }: {
                     </div>
                 ))}
             </div>}
-            {images.length > 0 && <Button type="button" onClick={handleUploadButtonClick} size='sm'>Select more Images</Button>}
+            {/* {images.length > 0 && <Button type="button" onClick={handleUploadButtonClick} size='sm'>Select more Images</Button>} */}
             {images.length == 0 &&
                 <div
                     onDrop={handleDrop}

@@ -6,9 +6,7 @@ import lombok.Getter;
 public enum ReclamationStatus {
     PENDING("PENDING"),
     APPROVED("APPROVED"),
-    REJECTED("REJECTED"),
-    COMPLETED("COMPLETED"),
-    CANCELLED("CANCELLED");
+    REJECTED("REJECTED");
 
     private final String status;
 

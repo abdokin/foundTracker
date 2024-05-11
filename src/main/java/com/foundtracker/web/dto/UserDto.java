@@ -10,9 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 @Data
 @Builder
@@ -31,9 +28,6 @@ public class UserDto {
     @Email
     private String email;
     private Role role;
-    public Collection<? extends GrantedAuthority> authorities;
-    public boolean isEnabled;
-
 
     public static UserDto mapToUserDto(User user) {
         return UserDto.builder()
@@ -42,8 +36,6 @@ public class UserDto {
                 .lastname(user.getLastname())
                 .email(user.getEmail())
                 .role(user.getRole())
-                .isEnabled(user.isEnabled())
-                .authorities(user.getAuthorities())
                 .build();
     }
 

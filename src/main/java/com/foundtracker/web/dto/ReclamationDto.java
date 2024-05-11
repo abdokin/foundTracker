@@ -1,5 +1,7 @@
 package com.foundtracker.web.dto;
 
+import java.util.List;
+
 import com.foundtracker.web.enums.ReclamationStatus;
 
 import com.foundtracker.web.model.Reclamation;
@@ -16,17 +18,21 @@ import lombok.NoArgsConstructor;
 @Schema(name = "Reclamation")
 public class ReclamationDto {
     private long id;
+    private String sujet;
+    private String description;
     @Builder.Default
     private ReclamationStatus status = ReclamationStatus.PENDING;
-    private ItemDto item;
     private UserDto user;
+    private List<DocumentDto> docs;
 
     public static ReclamationDto mapToDto(Reclamation reclamation) {
         return ReclamationDto.builder()
                 .id(reclamation.getId())
                 .status(reclamation.getStatus())
-                .item(ItemDto.mapToDto(reclamation.getItem()))
+                .sujet(reclamation.getSujet())
+                .description(reclamation.getDescription())
                 .user(UserDto.mapToUserDto(reclamation.getUser()))
+                .docs(reclamation.getDocs().stream().map(it -> DocumentDto.mapToDto(it)).toList())
                 .build();
     }
 }

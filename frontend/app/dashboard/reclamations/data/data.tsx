@@ -26,47 +26,21 @@ import {
   
   export const statuses = [
     {
-      value: "backlog",
-      label: "Backlog",
+      value: "PENDING",
+      label: "PENDING",
       icon: QuestionMarkCircledIcon,
     },
     {
-      value: "todo",
-      label: "Todo",
+      value: "REJECTED",
+      label: "REJECTED",
       icon: CircleIcon,
     },
     {
-      value: "in progress",
-      label: "In Progress",
+      value: "APPROVED",
+      label: "APPROVED",
       icon: StopwatchIcon,
-    },
-    {
-      value: "done",
-      label: "Done",
-      icon: CheckCircledIcon,
-    },
-    {
-      value: "canceled",
-      label: "Canceled",
-      icon: CrossCircledIcon,
     },
   ]
   
-  export const priorities = [
-    {
-      label: "Low",
-      value: "low",
-      icon: ArrowDownIcon,
-    },
-    {
-      label: "Medium",
-      value: "medium",
-      icon: ArrowRightIcon,
-    },
-    {
-      label: "High",
-      value: "high",
-      icon: ArrowUpIcon,
-    },
-  ]
+  
   

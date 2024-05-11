@@ -8,7 +8,14 @@ export type RegisterInput = {
   firstname: string;
   lastname: string;
 };
-
+export type Reclamation = {
+  id: number;
+  sujet: string;
+  description: string;
+  status: string;
+  documnets: Document[],
+  user: User,
+}
 
 
 export type ResetPasswordInput = {
@@ -18,6 +25,8 @@ export type ResetPasswordInput = {
 }
 
 export type CreateReclamationInput = {
+  objetId: number;
+  sujet: string;
   description: string;
   docs: File[];
 }
@@ -28,7 +37,6 @@ export type AddItemInput = {
   images: File[];
 }
 export type EditProfileInput = {
-  id: string,
   firstname: string,
   lastname: string,
   email: string,
@@ -68,6 +76,12 @@ export type AuthResponse = {
 export type Image = {
   id: number;
   imageUrl: string;
+  item: null;
+};
+
+export type Document = {
+  id: number;
+  documentUrl: string;
   item: null;
 };
 

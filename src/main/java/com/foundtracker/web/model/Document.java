@@ -11,16 +11,16 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @ToString
-public class Image {
+public class Document {
     @Id
     @GeneratedValue
     private Long id;
     @Column(nullable = false)
-    private String imageUrl;
+    private String documentUrl;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "reclamation_id", nullable = false)
     @JsonBackReference
-    private Item item;
+    private Reclamation reclamation;
 
 }

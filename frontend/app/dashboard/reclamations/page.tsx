@@ -6,23 +6,26 @@ import { z } from "zod"
 
 import { columns } from "./components/columns"
 import { DataTable } from "./components/data-table"
-import { taskSchema } from "./data/schema"
+import { getAllReclamations } from "@/lib/items-management"
 
-async function getTasks() {
-    const data = await fs.readFile(
-        path.join(process.cwd(), "tasks.json")
-    )
 
-    const tasks = JSON.parse(data.toString())
+export default async function ReclmationPage({
+    searchParams,
+}: {
+    searchParams?: {
+        query?: string;
+        page?: number;
+        pageSize?: number,
+    };
+}) {
 
-    return z.array(taskSchema).parse(tasks)
-}
-
-export default async function ReclamationsPage() {
-    const tasks = await getTasks()
+    const reclamations = await getAllReclamations({
+        pageNumber: searchParams?.page ?? 0,
+        pageSize: searchParams?.pageSize ?? 10,
+    });
     return (
         <div className=" h-full flex-1 flex-col space-y-8 p-8 md:flex">
-            <DataTable data={tasks} columns={columns} />
+            <DataTable data={reclamations.content} columns={columns} />
         </div>
     )
 }

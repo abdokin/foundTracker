@@ -1,10 +1,7 @@
 
 
 import { getAllItems } from "@/lib/items-management"
-import ItemCard from "@/components/item-card"
-import ServerPagination from "@/components/pagination"
 import { ItemFilters } from "@/components/item-filters";
-import AddItemForm from "@/components/add-item-form";
 import { cookies } from "next/headers";
 import { User } from "@/lib/types";
 import ListItems from "@/components/list-items";

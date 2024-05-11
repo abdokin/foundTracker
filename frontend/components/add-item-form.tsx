@@ -59,7 +59,9 @@ export default function AddItemForm() {
         console.log(formData);
 
         const res = await AddItem(formData);
-        if (!res.success) {
+        if ('timestamp' in res) {
+            console.log(res);
+
             if (res.errors) {
                 res.errors.map((it) => {
                     // @ts-ignore
@@ -72,13 +74,7 @@ export default function AddItemForm() {
                 description: res.timestamp,
             });
         } else {
-            toast.success(res.message, {
-                description: res.timestamp,
-                action: {
-                    label: "undo",
-                    onClick: () => console.log("Undo"),
-                },
-            });
+            toast.success("Objet created Successfull");
             form.reset();
             setOpen(false);
         }

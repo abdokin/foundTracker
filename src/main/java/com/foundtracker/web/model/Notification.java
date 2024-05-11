@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -24,11 +26,13 @@ public class Notification {
 
     @ManyToOne
     @JoinColumn(name = "reclamation_id")
+    @JsonBackReference
     private Reclamation reclamation;
 
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     public User user;
 
 }

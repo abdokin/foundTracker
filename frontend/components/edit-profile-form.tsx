@@ -35,7 +35,7 @@ export default function EditProfileForm({ user }: { user: User }) {
     async function onSubmit(values: EditProfileInput) {
         const res = await updateProfileInfo(values);
         console.log(values, res);
-        if (!res.success) {
+        if ('timestamp' in res) {
             if (res.errors) {
                 res.errors.map((it) => {
                     // @ts-ignore
@@ -48,13 +48,7 @@ export default function EditProfileForm({ user }: { user: User }) {
                 description: res.timestamp,
             });
         } else {
-            toast.success(res.message, {
-                description: res.timestamp,
-                action: {
-                    label: "undo",
-                    onClick: () => console.log("Undo"),
-                },
-            });
+            toast.success("Profile Update successuflly");
         }
     }
     return (

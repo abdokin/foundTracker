@@ -1,5 +1,4 @@
 "use client"
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { Menu, Search } from "lucide-react";
 
@@ -16,18 +15,18 @@ export default function NavBar({ user }: { user: User }) {
     const path = usePathname();
 
     const links = [
-        { path: "/dashboard", label: "Dashboard" },
+        { path: "/dashboard", label: "Overview" },
         { path: "/dashboard/items", label: "Items" },
         { path: "/dashboard/reclamations", label: "Reclamations" },
     ];
 
     return (
-        <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-primary  px-4 md:px-6 z-[100000]">
+        <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-primary  px-4 md:px-6 ">
             <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                 {links.map((link) => (
                     <Link key={link.path} href={link.path} className={cx(
                         path === link.path ? "bg-white px-4 py-2 rounded-md text-primary" : " text-white",
-                        "text-bold text-lg transition-all"
+                        "text-bold text-md transition-all"
                     )}>
                         {link.label}
                     </Link>

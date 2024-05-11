@@ -1,33 +1,31 @@
 "use server"
 import { cookies } from "next/headers";
 import { API_URL } from "./constants";
-import { AddItemInput, ApiResponse, Item, Page, Pagination } from "./types";
+import { AddItemInput, ErrorResponse, Item, Page, Pagination, Reclamation } from "./types";
 import assert from "assert";
 import { revalidatePath } from "next/cache";
-import { cleanCookies } from "./auth";
 
 
 
 export async function getAllItems(
     values: Pagination
-): Promise<ApiResponse<Page<Item>>> {
-    const access_token = cookies().get("access_token")
+): Promise<Page<Item>> {
+    const token = cookies().get("token")
 
-    assert(access_token && access_token.value != ""); // it always should exist
+    assert(token && token.value != ""); // it always should exist
     try {
         const response = await fetch(API_URL + `/items?page=${values.pageNumber}&size=${values.pageSize}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${access_token?.value}`
+                "Authorization": `Bearer ${token?.value}`
             },
         });
         if (response.status === 403) {
             throw new Error("Unauthorized access. Please log in again.");
         }
-        console.log(response);
 
-        const data: ApiResponse<Page<Item>> = await response.json();
+        const data: Page<Item> = await response.json();
 
         return data;
     } catch (error) {
@@ -35,18 +33,43 @@ export async function getAllItems(
         throw error;
     }
 }
-export async function AddItem(values: FormData): Promise<ApiResponse<Item>> {
-    console.log(values);
 
-    const access_token = cookies().get("access_token");
-    assert(access_token && access_token.value != ""); // it always should exist
 
+
+export async function getAllReclamations(
+    values: Pagination
+): Promise<Page<Reclamation>> {
+    const token = cookies().get("token")
+
+    assert(token && token.value != ""); // it always should exist
     try {
+        const response = await fetch(API_URL + `/reclamations?page=${values.pageNumber}&size=${values.pageSize}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token?.value}`
+            },
+        });
+        if (response.status === 403) {
+            throw new Error("Unauthorized access. Please log in again.");
+        }
 
+        const data: Page<Reclamation> = await response.json();
+
+        return data;
+    } catch (error) {
+        console.error("Error loading items:", error);
+        throw error;
+    }
+}
+export async function AddItem(values: FormData): Promise<Item | ErrorResponse> {
+    const token = cookies().get("token");
+    assert(token && token.value != "");
+    try {
         const response = await fetch(API_URL + "/items/create", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${access_token?.value}`,
+                "Authorization": `Bearer ${token?.value}`,
             },
             body: values,
         });
@@ -54,12 +77,122 @@ export async function AddItem(values: FormData): Promise<ApiResponse<Item>> {
         if (response.status === 403) {
             throw new Error("Unauthorized access. Please log in again.");
         }
+        if (!response.ok) {
+            const errorRespose: ErrorResponse = await response.json();
+            return errorRespose;
+        }
 
-        const data: ApiResponse<Item> = await response.json();
+
+        const data: Item = await response.json();
         revalidatePath("/dashboard/items")
         return data;
     } catch (error) {
         console.error("Error during creating item:", error);
+        throw error;
+    }
+}
+
+
+export async function ClaimItem(values: FormData): Promise<{ message: string } | ErrorResponse> {
+    const token = cookies().get("token");
+    assert(token && token.value != "");
+    try {
+        const response = await fetch(API_URL + "/reclamations/create", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token?.value}`,
+            },
+            body: values,
+        });
+
+        if (response.status === 403) {
+            throw new Error("Unauthorized access. Please log in again.");
+        }
+        if (!response.ok) {
+            const errorRespose: ErrorResponse = await response.json();
+            return errorRespose;
+        }
+
+
+        const data: string = await response.text();
+        revalidatePath("/dashboard/items")
+        return {
+            message: data
+        };
+    } catch (error) {
+        console.error("Error during claiming item:", error);
+        throw error;
+    }
+}
+
+
+
+export async function rejectReclamtion(
+    reclamationId: number
+): Promise<Reclamation | ErrorResponse> {
+    const token = cookies().get("token")
+
+    assert(token && token.value != ""); // it always should exist
+    try {
+        const response = await fetch(API_URL + `/reclamations/${reclamationId}/reject`, {
+            method: "POST",
+            headers: {
+                // "Content-Type": "application/json",
+                'accept': "*/*",
+                "Authorization": `Bearer ${token.value}`
+            },
+        });
+        console.log(response);
+        
+        if (response.status === 403) {
+            throw new Error("Unauthorized access. Please log in again.");
+        }
+
+        if (!response.ok) {
+            const errorRespose: ErrorResponse = await response.json();
+            return errorRespose;
+        }
+
+        const data: Reclamation = await response.json();
+        revalidatePath("/dashboard/recmlamationS/");
+        return data;
+    } catch (error) {
+        console.error("Error UPDATE RECLAMATION:", error);
+        throw error;
+    }
+}
+
+export async function acceptReclamtion(
+    reclamationId: number
+): Promise<Reclamation | ErrorResponse> {
+    const token = cookies().get("token")
+
+    assert(token && token.value != ""); // it always should exist
+    try {
+        const response = await fetch(API_URL + `/reclamations/${reclamationId}/accept`, {
+            method: "POST",
+            headers: {
+                // "Content-Type": "application/json",
+                'accept': "*/*",
+                "Authorization": `Bearer ${token.value}`
+            },
+        });
+        console.log(response);
+        
+        if (response.status === 403) {
+            throw new Error("Unauthorized access. Please log in again.");
+        }
+
+        if (!response.ok) {
+            const errorRespose: ErrorResponse = await response.json();
+            return errorRespose;
+        }
+
+        const data: Reclamation = await response.json();
+        revalidatePath("/dashboard/recmlamationS/");
+        return data;
+    } catch (error) {
+        console.error("Error UPDATE RECLAMATION:", error);
         throw error;
     }
 }

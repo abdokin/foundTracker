@@ -3,7 +3,6 @@ package com.foundtracker.web.service;
 import com.foundtracker.web.dto.CreateItemDto;
 import com.foundtracker.web.dto.EditItemDto;
 import com.foundtracker.web.dto.ItemDto;
-import com.foundtracker.web.enums.ItemStatus;
 import com.foundtracker.web.exception.ItemNotFoundException;
 import com.foundtracker.web.model.Image;
 import com.foundtracker.web.model.Item;
@@ -22,12 +21,10 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final ImageService imageService;
-    private final UserService userService;
+
 
     public ItemDto save(CreateItemDto input) throws IOException {
         Item item = CreateItemDto.mapToDto(input);
-        item.setStatus(ItemStatus.FOUND);
-        item.setUser(userService.getCurrentUser());
         itemRepository.save(item);
         List<Image> images = imageService.storeImages(input.getImages(), item);
         item.setImages(images);
