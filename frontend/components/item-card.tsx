@@ -1,16 +1,17 @@
 "use client"
 import { API_URL } from "@/lib/constants";
-import { Item, User } from "@/lib/types";
+import { Image, Item, User } from "@/lib/types";
 import { useState } from "react";
 import Link from "next/link";
 import { cx } from "class-variance-authority";
 import { Button } from "./ui/button";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 
 export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boolean }) {
-    const [currentImage, setCurrentImage] = useState(
+    const [currentImage, setCurrentImage] = useState<Image>(
         item.images[0]
     );
-    const currentImageUrl = API_URL + "/images/" + currentImage.imageUrl;
+    const currentImageUrl = API_URL + "/images/" + currentImage?.imageUrl;
     function formatDateForHuman(dateString: string) {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
@@ -21,16 +22,23 @@ export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boole
     }
     return (
         <div className={" border w-full hover:shadow-md p-0 bg-white hover:shadow-md"}>
-            <div className="md:flex-shrink-0 px-4 py-2">
-                <img className="h w-full object-cover max-h-56" src={currentImageUrl} alt={item.name} />
+            <div className="md:flex-shrink-0 px-4 py-2w">
+                <Carousel>
+                    <CarouselContent>
+                        {item.images.map((it, index) => <CarouselItem key={index}>
+                            <img className="h w-full object-cover max-h-56" src={API_URL + "/images/" + it?.imageUrl} alt={item.name} />
+                        </CarouselItem>)}
+                    </CarouselContent>
+
+                </Carousel>
             </div>
-            <div className="flex overflow-x-auto gap-2 px-4">
+            <div className="flex overflow-x-auto gap-2 px-4 pt-2">
                 {item.images.map((it, index) => (
                     <ImageSelect
                         key={index}
                         url={it.imageUrl}
                         title={item.name}
-                        active={it.imageUrl === currentImage.imageUrl}
+                        active={it.imageUrl === currentImage?.imageUrl}
                         setActive={() => setCurrentImage(it)}
                     />
                 ))}
@@ -82,7 +90,7 @@ const ImageSelect = ({
             loading="lazy"
             className={cx(
                 "w-9 h-9 rounded-md",
-                active && "border-main-300",
+                active && "border-primary",
                 "border-2 cursor-pointer"
             )}
             src={`${API_URL}/images/${url}`}
