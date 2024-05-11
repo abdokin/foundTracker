@@ -1,6 +1,7 @@
 package com.foundtracker.web.exception;
 
-import com.foundtracker.web.responses.ApiResponse;
+import com.foundtracker.web.responses.ErrorResponse;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @ControllerAdvice
-public class GlobalExceptionHandler  {
+public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<?>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        ApiResponse<?> errorResponse = ApiResponse.error("Validation Error");
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        ErrorResponse errorResponse = ErrorResponse.error("Validation Error");
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = null;
             String errorMessage = null;
@@ -37,24 +38,25 @@ public class GlobalExceptionHandler  {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e) {
-        ApiResponse<?> errorResponse = ApiResponse.error("Bad Credentials" + e.getMessage());
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException e) {
+        ErrorResponse errorResponse = ErrorResponse.error(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> handleRuntimeException(RuntimeException e) {
-        return new ResponseEntity<>(ApiResponse.error(e.toString()),HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
+        return new ResponseEntity<>(ErrorResponse.error(e.toString()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         String errorMessage = e.getMessage();
         String fieldName = extractFieldName(errorMessage);
-        ApiResponse<?> apiResponse =ApiResponse.error("Validation Error");
-        apiResponse.addValidationError(fieldName,fieldName+" already exists");
-        return new ResponseEntity<>(apiResponse,HttpStatus.BAD_REQUEST);
+        ErrorResponse errorResponse = ErrorResponse.error("Validation Error");
+        errorResponse.addValidationError(fieldName, fieldName + " already exists");
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     public static String extractFieldName(String errorMessage) {

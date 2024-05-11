@@ -3,6 +3,8 @@ package com.foundtracker.web.service;
 import com.foundtracker.web.dto.ChangePasswordDto;
 import com.foundtracker.web.dto.EditProfileDto;
 import com.foundtracker.web.dto.UserDto;
+import com.foundtracker.web.exception.FieldsNotMatch;
+import com.foundtracker.web.exception.IncorrectPasswordException;
 import com.foundtracker.web.model.User;
 import com.foundtracker.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -24,33 +24,26 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public Page<UserDto> getAll(Pageable pageable) {
+    public Page<UserDto> getAllUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
         return users.map(UserDto::mapToUserDto);
     }
 
-    public void changePassword(ChangePasswordDto request, Principal connectedUser) {
-
-        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
-        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
-            throw new IllegalStateException("Wrong password");
-        }
-        if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
-            throw new IllegalStateException("Password are not the same");
-        }
-
+    public void changePassword(ChangePasswordDto request) throws FieldsNotMatch, IncorrectPasswordException {
+        var user = getCurrentUser();
+        if (!request.getNewPassword().equals(request.getConfirmationPassword()))
+            throw new FieldsNotMatch("newPassword", "confirmationPassword");
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword()))
+            throw new IncorrectPasswordException();
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
 
-    public User getCurrentUser() throws IllegalStateException {
+    public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
-        if (currentUser == null) {
-            throw new IllegalStateException("Current user is null");
-        }
-        currentUser.setItems(null);
-        currentUser.setReclamations(null);
+        assert currentUser != null;
+
         return currentUser;
     }
 

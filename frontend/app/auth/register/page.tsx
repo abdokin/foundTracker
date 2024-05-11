@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 export default function Page() {
-  if (cookies().has("access_token")) {
+  if (cookies().has("token")) {
     redirect("/dashboard/profile");
   }
   return (

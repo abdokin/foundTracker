@@ -6,6 +6,8 @@ import jakarta.validation.ReportAsSingleViolation;
 
 import java.lang.annotation.*;
 
+import com.foundtracker.web.validator.impl.ImagesValidator;
+
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

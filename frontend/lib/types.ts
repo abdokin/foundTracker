@@ -33,7 +33,7 @@ export type EditProfileInput = {
   lastname: string,
   email: string,
 }
-export type ApiResponse<T> = {
+export interface ErrorResponse {
   success: boolean;
   message: string;
   timestamp: string;
@@ -41,7 +41,6 @@ export type ApiResponse<T> = {
     field: string;
     message: string;
   }[];
-  data: T;
 };
 
 export type Notification = {
@@ -61,8 +60,7 @@ export type User = {
 };
 
 export type AuthResponse = {
-  access_token: string;
-  refresh_token: string;
+  token: string;
   user: User;
 };
 
@@ -90,9 +88,9 @@ export type Pageable = {
   pageNumber: number;
   pageSize: number;
   sort: {
-      empty: boolean;
-      sorted: boolean;
-      unsorted: boolean;
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
   };
   offset: number;
   paged: boolean;
@@ -110,9 +108,9 @@ export type Page<T> = {
   size: number;
   number: number;
   sort: {
-      empty: boolean;
-      sorted: boolean;
-      unsorted: boolean;
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
   };
   numberOfElements: number;
   first: boolean;

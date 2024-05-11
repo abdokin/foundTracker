@@ -1,8 +1,10 @@
-package com.foundtracker.web.validator;
+package com.foundtracker.web.validator.impl;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.foundtracker.web.validator.ImageFiles;
 
 import java.io.IOException;
 import java.io.InputStream;

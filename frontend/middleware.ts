@@ -9,9 +9,9 @@ export function middleware(request: NextRequest) {
   console.log(request.nextUrl.pathname);
   
   if (request.nextUrl.pathname.startsWith("/dashboard")) {
-    let access_token = request.cookies.get("access_token");
-    console.log(access_token);
-    if (!request.cookies.has("access_token")) {
+    let token = request.cookies.get("token");
+    console.log(token);
+    if (!request.cookies.has("token")) {
       return NextResponse.redirect(new URL("/auth/login", request.url));
     }
   }

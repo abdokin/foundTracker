@@ -3,42 +3,61 @@ package com.foundtracker.web.controller;
 import com.foundtracker.web.dto.ChangePasswordDto;
 import com.foundtracker.web.dto.EditProfileDto;
 import com.foundtracker.web.dto.UserDto;
+import com.foundtracker.web.exception.FieldsNotMatch;
+import com.foundtracker.web.exception.IncorrectPasswordException;
+import com.foundtracker.web.exception.UnauthorizedException;
 import com.foundtracker.web.model.User;
-import com.foundtracker.web.responses.ApiResponse;
+import com.foundtracker.web.responses.ErrorResponse;
 import com.foundtracker.web.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/profile")
 @RequiredArgsConstructor
 @Tag(name = "Profile")
 public class ProfileController {
-    private final UserService service;
+    private final UserService userService;
 
     @PatchMapping("/change-password")
-    public ApiResponse<?> changePassword(
-            @RequestBody @Valid  ChangePasswordDto request,
-            Principal connectedUser) {
-        service.changePassword(request, connectedUser);
-        return ApiResponse.success(null,"Password Changed Successfully");
+    public ResponseEntity<String> changePassword(
+            @RequestBody @Valid ChangePasswordDto request,
+            @AuthenticationPrincipal User user) throws IncorrectPasswordException, FieldsNotMatch {
+        userService.changePassword(request);
+        return ResponseEntity.ok("Password chnaged");
     }
 
     @PatchMapping("/update-info")
-    public ApiResponse<UserDto> updateInfo(@RequestBody @Valid EditProfileDto input) {
-        return ApiResponse.success(service.editProfile(input),"Profile Updated Successfully");
+    public ResponseEntity<UserDto> updateInfo(@RequestBody @Valid EditProfileDto input,
+            @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(userService.editProfile(input));
     }
 
     @GetMapping("/current-user")
-    public ApiResponse<UserDto> getCurrentUser(@AuthenticationPrincipal User user) {
+    public ResponseEntity<UserDto> getCurrentUser(@AuthenticationPrincipal User user) {
         if (user == null) {
-            return ApiResponse.error("Couldn't load current user");
+            throw new UnauthorizedException("Not authenticated.");
         }
-        return ApiResponse.success(UserDto.mapToUserDto(user), "Current user details retrieved successfully");
+        UserDto userDto = UserDto.mapToUserDto(user);
+        return ResponseEntity.ok(userDto);
+    }
+
+    @ExceptionHandler({ UnauthorizedException.class, IncorrectPasswordException.class, FieldsNotMatch.class })
+    public ResponseEntity<ErrorResponse> handleIncorrectPasswordException(Exception e) {
+        ErrorResponse errorResponse = ErrorResponse.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler({ UnauthorizedException.class, FieldsNotMatch.class, FieldsNotMatch.class })
+    public ResponseEntity<ErrorResponse> handleFieldsNotMatch(Exception e) {
+        ErrorResponse errorResponse = ErrorResponse.error(e.getMessage());
+        errorResponse.addValidationError("currentPassword", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

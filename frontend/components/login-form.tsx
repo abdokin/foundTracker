@@ -31,29 +31,23 @@ export default function LoginForm() {
       password: "",
     },
   });
+
   async function onSubmit(values: LoginInput) {
     const res = await login(values);
     console.log(values, res);
-    if (!res.success) {
+
+    if ('timestamp' in res) {
       if (res.errors) {
-        res.errors.map((it) => {
+        res.errors.forEach((it) => {
           // @ts-ignore
-          form.setError(it.field, {
-            message: it.message,
-          });
+          form.setError(it.field, { message: it.message });
         });
       }
       toast.error(res.message, {
         description: res.timestamp,
       });
     } else {
-      toast.success(res.message, {
-        description: res.timestamp,
-        action: {
-          label: "undo",
-          onClick: () => console.log("Undo"),
-        },
-      });
+      toast.success("Welcome Back");
     }
   }
   return (

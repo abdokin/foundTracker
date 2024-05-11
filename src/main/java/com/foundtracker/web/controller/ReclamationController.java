@@ -1,13 +1,12 @@
 package com.foundtracker.web.controller;
 
-
 import com.foundtracker.web.dto.ReclamationDto;
-import com.foundtracker.web.responses.ApiResponse;
 import com.foundtracker.web.service.ReclamationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,23 +17,23 @@ public class ReclamationController {
     private final ReclamationService reclamationService;
 
     @GetMapping
-    public ApiResponse<Page<ReclamationDto>> getAllItems(
+    public ResponseEntity<Page<ReclamationDto>> getAllItems(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        Page<ReclamationDto> reclamations =reclamationService.findAll(PageRequest.of(page, size));
+            @RequestParam(defaultValue = "10") int size) {
+        Page<ReclamationDto> reclamations = reclamationService.findAll(PageRequest.of(page, size));
 
-        return ApiResponse.success(reclamations,"Reclamations loaded successfully");
+        return ResponseEntity.ok(reclamations);
     }
+
     @GetMapping("/{reclamationId}")
-    public ApiResponse<ReclamationDto> getReclamation(@PathVariable Long reclamationId) {
+    public ResponseEntity<ReclamationDto> getReclamation(@PathVariable Long reclamationId) {
         ReclamationDto reclamation = reclamationService.findById(reclamationId);
-        return ApiResponse.success(reclamation,"Reclamation loaded successfully");
+        return ResponseEntity.ok(reclamation);
     }
 
     @PostMapping("/{itemId}")
-    private ApiResponse<ReclamationDto> create(@PathVariable long itemId) {
+    private ResponseEntity<ReclamationDto> create(@PathVariable long itemId) {
         ReclamationDto reclamation = reclamationService.save(itemId);
-        return ApiResponse.success(reclamation,"Reclamation created successfully");
+        return ResponseEntity.ok(reclamation);
     }
 }
