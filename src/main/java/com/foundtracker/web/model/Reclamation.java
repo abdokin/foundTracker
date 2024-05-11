@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,6 +18,7 @@ public class Reclamation {
     @GeneratedValue
     private long id;
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private ReclamationStatus status = ReclamationStatus.PENDING;
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)

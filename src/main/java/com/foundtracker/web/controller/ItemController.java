@@ -4,7 +4,6 @@ package com.foundtracker.web.controller;
 import com.foundtracker.web.dto.CreateItemDto;
 import com.foundtracker.web.dto.EditItemDto;
 import com.foundtracker.web.dto.ItemDto;
-import com.foundtracker.web.model.Item;
 import com.foundtracker.web.responses.ApiResponse;
 import com.foundtracker.web.service.ItemService;
 import io.swagger.v3.oas.annotations.tags.Tag;

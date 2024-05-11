@@ -39,7 +39,6 @@ public class ProfileController {
         if (user == null) {
             return ApiResponse.error("Couldn't load current user");
         }
-        user.setTokens(null);
         return ApiResponse.success(UserDto.mapToUserDto(user), "Current user details retrieved successfully");
     }
 }

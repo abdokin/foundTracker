@@ -1,7 +1,6 @@
 package com.foundtracker.web.dto;
 
 import com.foundtracker.web.enums.ItemStatus;
-import com.foundtracker.web.model.Image;
 import com.foundtracker.web.model.Item;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -22,6 +21,7 @@ public class ItemDto {
     String name;
     String description;
     private LocalDateTime foundDateTime;
+    @Builder.Default
     private ItemStatus status = ItemStatus.FOUND;
     private List<ImageDto> images;
 

@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Schema(name = "Reclamation")
 public class ReclamationDto {
     private long id;
+    @Builder.Default
     private ReclamationStatus status = ReclamationStatus.PENDING;
     private ItemDto item;
     private UserDto user;

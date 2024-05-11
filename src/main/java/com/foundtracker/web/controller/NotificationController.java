@@ -1,6 +1,5 @@
 package com.foundtracker.web.controller;
 
-import com.foundtracker.web.dto.ItemDto;
 import com.foundtracker.web.dto.NotificationDto;
 import com.foundtracker.web.responses.ApiResponse;
 import com.foundtracker.web.service.NotificationService;

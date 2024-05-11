@@ -3,10 +3,7 @@ package com.foundtracker.web.model;
 import com.foundtracker.web.enums.ItemStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,6 +25,7 @@ public class Item {
     private LocalDateTime foundDateTime;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private ItemStatus status = ItemStatus.FOUND;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;

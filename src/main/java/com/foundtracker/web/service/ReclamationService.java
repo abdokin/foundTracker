@@ -3,7 +3,6 @@ package com.foundtracker.web.service;
 import com.foundtracker.web.dto.ReclamationDto;
 import com.foundtracker.web.model.Item;
 import com.foundtracker.web.model.Reclamation;
-import com.foundtracker.web.model.User;
 import com.foundtracker.web.repository.ItemRepository;
 import com.foundtracker.web.repository.ReclamationRepository;
 import lombok.RequiredArgsConstructor;

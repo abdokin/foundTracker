@@ -8,15 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.io.IOUtils;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
+
 public class ImagesValidator implements ConstraintValidator<ImageFiles, List<MultipartFile>> {
 
     private static final List<String> ALLOWED_IMAGE_CONTENT_TYPES = Arrays.asList(
-            "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp"
-    );
-
+            "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp");
 
     @Override
     public boolean isValid(List<MultipartFile> value, ConstraintValidatorContext context) {
@@ -34,7 +32,7 @@ public class ImagesValidator implements ConstraintValidator<ImageFiles, List<Mul
                     return false;
                 }
             } catch (IOException e) {
-//                e.printStackTrace();
+                e.printStackTrace();
                 return false;
             }
         }
@@ -43,17 +41,9 @@ public class ImagesValidator implements ConstraintValidator<ImageFiles, List<Mul
     }
 
     private boolean isValidImageContentType(InputStream inputStream, String contentType) {
-        try {
-            // Read the first few bytes to determine the content type
-            byte[] bytes = IOUtils.toByteArray(inputStream);
-            MimeType detectedType = MimeTypeUtils.parseMimeType(contentType);
-
-            // Determine if the detected content type is in the list of allowed types
-            if (ALLOWED_IMAGE_CONTENT_TYPES.contains(detectedType.toString())) {
-                return true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        MimeType detectedType = MimeTypeUtils.parseMimeType(contentType);
+        if (ALLOWED_IMAGE_CONTENT_TYPES.contains(detectedType.toString())) {
+            return true;
         }
 
         return false;

@@ -8,7 +8,6 @@ import com.foundtracker.web.enums.ItemStatus;
 import com.foundtracker.web.exception.ItemNotFoundException;
 import com.foundtracker.web.model.Image;
 import com.foundtracker.web.model.Item;
-import com.foundtracker.web.model.User;
 import com.foundtracker.web.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

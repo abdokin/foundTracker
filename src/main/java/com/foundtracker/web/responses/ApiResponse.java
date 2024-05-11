@@ -17,8 +17,10 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(name="ApiResponse")
 public class ApiResponse<T> {
+    @Builder.Default
     private boolean success = false;
     private String message;
+    @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();
     private List<ValidationError> errors;
     private T data;

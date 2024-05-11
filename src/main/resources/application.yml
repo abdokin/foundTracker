@@ -30,4 +30,3 @@ server:
     include-message: always
     include-binding-errors: always
     include-exception: false
-    include-stacktrace: on_param

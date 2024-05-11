@@ -24,44 +24,38 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-
     public Page<UserDto> getAll(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
-        return  users.map(UserDto::mapToUserDto);
+        return users.map(UserDto::mapToUserDto);
     }
 
     public void changePassword(ChangePasswordDto request, Principal connectedUser) {
 
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
-
-        // check if the current password is correct
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
             throw new IllegalStateException("Wrong password");
         }
-        // check if the two new passwords are the same
         if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
             throw new IllegalStateException("Password are not the same");
         }
 
-        // update the password
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-
-        // save the new password
         userRepository.save(user);
     }
-    public  User getCurrentUser() throws IllegalStateException {
+
+    public User getCurrentUser() throws IllegalStateException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         if (currentUser == null) {
             throw new IllegalStateException("Current user is null");
         }
-        currentUser.setTokens(null);
         currentUser.setItems(null);
         currentUser.setReclamations(null);
         return currentUser;
     }
+
     public UserDto editProfile(EditProfileDto input) {
-        User user = userRepository.findById(getCurrentUser().getId()).orElseThrow(); // TODO :
+        User user = userRepository.findById(getCurrentUser().getId()).orElseThrow();
         user.setEmail(input.getEmail());
         user.setFirstname(input.getFirstname());
         user.setLastname(input.getLastname());
@@ -69,8 +63,10 @@ public class UserService {
         updateAuthentication(user);
         return UserDto.mapToUserDto(user);
     }
+
     private void updateAuthentication(User updatedUser) {
-        Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(updatedUser, updatedUser.getPassword(), ((UserDetails) updatedUser).getAuthorities());
+        Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(updatedUser,
+                updatedUser.getPassword(), ((UserDetails) updatedUser).getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
     }
 }
