@@ -53,6 +53,7 @@ export interface ErrorResponse {
 
 export type Notification = {
   id: string,
+  message: string,
   receivedAt: string,
 }
 

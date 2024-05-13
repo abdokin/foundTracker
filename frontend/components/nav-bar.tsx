@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserNav } from "@/components/user-nav";
-import { User } from "@/lib/types";
+import { Notification, Page, User } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { cx } from "class-variance-authority";
-import { NoticiationsCenter } from "./user-notifications";
+import { NotificationsCenter } from "./user-notifications";
 
-export default function NavBar({ user }: { user: User }) {
+export default function NavBar({ user ,notifications}: { user: User ,notifications: Page<Notification>}) {
     const path = usePathname();
 
     const links = [
@@ -68,7 +68,7 @@ export default function NavBar({ user }: { user: User }) {
                         />
                     </div>
                 </form>
-                <NoticiationsCenter/>
+                <NotificationsCenter notifications={notifications} />
                 <UserNav user={user} />
             </div>
         </header>

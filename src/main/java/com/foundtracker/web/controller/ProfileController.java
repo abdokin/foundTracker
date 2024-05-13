@@ -48,16 +48,21 @@ public class ProfileController {
         return ResponseEntity.ok(userDto);
     }
 
-    @ExceptionHandler({ UnauthorizedException.class, IncorrectPasswordException.class, FieldsNotMatch.class })
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized: " + ex.getMessage());
+    }
+
+    @ExceptionHandler({ IncorrectPasswordException.class })
     public ResponseEntity<ErrorResponse> handleIncorrectPasswordException(Exception e) {
         ErrorResponse errorResponse = ErrorResponse.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    @ExceptionHandler({ UnauthorizedException.class, FieldsNotMatch.class, FieldsNotMatch.class })
+    @ExceptionHandler({ FieldsNotMatch.class })
     public ResponseEntity<ErrorResponse> handleFieldsNotMatch(Exception e) {
         ErrorResponse errorResponse = ErrorResponse.error(e.getMessage());
-        errorResponse.addValidationError("currentPassword", e.getMessage());
+        errorResponse.addValidationError("confirmationPassword", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

@@ -104,7 +104,7 @@ export default function CreateReclamationFrom({
 
     return (
         <Sheet onOpenChange={setOpen} open={open} >
-            <SheetTrigger>Claim</SheetTrigger>
+            <SheetTrigger><Button>Claim</Button></SheetTrigger>
             <SheetContent className="sm:max-w-3xl w-full">
                 <SheetHeader>
                     <SheetTitle>Create Reclamation</SheetTitle>
