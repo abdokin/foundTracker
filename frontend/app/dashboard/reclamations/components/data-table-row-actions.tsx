@@ -32,6 +32,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { acceptReclamtion, rejectReclamtion } from "@/lib/items-management"
+import ViewReclamation from "@/components/view-reclamation";
+import Link from "next/link";
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
 }
@@ -44,7 +46,11 @@ export function DataTableRowActions<TData extends Reclamation>({
   return (
 
     <div className="flex gap-2">
-      <AlertDialog>
+      {/* <ViewReclamation reclamation={reclamation} /> */}
+      <Link href={`/dashboard/reclamations/${reclamation.id}`}>
+        <Button variant={'secondary'}>Details</Button>
+      </Link>
+      {(reclamation.status === "PENDING" || reclamation.status === "APPROVED") && <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant={'destructive'} size={'sm'}>Reject</Button>
         </AlertDialogTrigger>
@@ -59,19 +65,19 @@ export function DataTableRowActions<TData extends Reclamation>({
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={async () => {
-             const res = await rejectReclamtion(reclamation.id);
-             if ('timestamp' in res) {
-               toast.error(res.message, {
-                 description: res.timestamp,
-               });
-             } else {
-               toast.success("Reclamation Rejected");
-             }
+              const res = await rejectReclamtion(reclamation.id);
+              if ('timestamp' in res) {
+                toast.error(res.message, {
+                  description: res.timestamp,
+                });
+              } else {
+                toast.success("Reclamation Rejected");
+              }
             }}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
-      <AlertDialog>
+      </AlertDialog>}
+      {(reclamation.status === "PENDING" || reclamation.status === "REJECTED") && <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button size={'sm'}>Accept</Button>
         </AlertDialogTrigger>
@@ -97,7 +103,7 @@ export function DataTableRowActions<TData extends Reclamation>({
             }}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog>}
     </div>
 
   )

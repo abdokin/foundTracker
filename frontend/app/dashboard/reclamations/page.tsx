@@ -24,7 +24,7 @@ export default async function ReclmationPage({
         pageSize: searchParams?.pageSize ?? 10,
     });
     return (
-        <div className=" h-full flex-1 flex-col space-y-8 p-8 md:flex">
+        <div className=" h-full flex-1 flex-col space-y-8 p-8 md:flex container">
             <DataTable data={reclamations.content} columns={columns} />
         </div>
     )

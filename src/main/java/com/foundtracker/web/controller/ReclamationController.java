@@ -2,7 +2,6 @@ package com.foundtracker.web.controller;
 
 import com.foundtracker.web.dto.CreateReclamationDto;
 import com.foundtracker.web.dto.ReclamationDto;
-import com.foundtracker.web.enums.ReclamationStatus;
 import com.foundtracker.web.service.ReclamationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

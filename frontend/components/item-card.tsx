@@ -38,11 +38,11 @@ export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boole
 
 
                 <div className="flex items-center gap-2">
-                    <Link href={`/products/${item.name}`}>
+                    {/* <Link href={`/products/${item.name}`}>
                         <Button size={"sm"}>
                             Details
                         </Button>
-                    </Link>
+                    </Link> */}
 
                     <CreateReclamationFrom objetId={item.id} />
                     {isAdmin && <Link href={`/products/${item.name}`}>

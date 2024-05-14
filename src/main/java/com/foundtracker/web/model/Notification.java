@@ -22,7 +22,9 @@ public class Notification {
     private int id;
     @Column(nullable = false,length = 300) // MAX len
     private String message;
-    private LocalDateTime receivedAt;
+
+    @Builder.Default
+    private LocalDateTime receivedAt = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "reclamation_id")

@@ -126,6 +126,33 @@ export async function ClaimItem(values: FormData): Promise<{ message: string } |
 }
 
 
+export async function getReclamation(reclamationId: number): Promise<Reclamation> {
+    const token = cookies().get("token");
+    assert(token && token.value != "");
+    try {
+        const response = await fetch(API_URL + "/reclamations/" + reclamationId, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token?.value}`,
+            },
+        });
+
+        if (response.status === 403) {
+            throw new Error("Unauthorized access. Please log in again.");
+        }
+        if (!response.ok) {
+            const errorRespose: ErrorResponse = await response.json();
+            throw new Error(errorRespose.message);
+        }
+
+
+        const data: Reclamation = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error during claiming item:", error);
+        throw error;
+    }
+}
 
 export async function rejectReclamtion(
     reclamationId: number
@@ -143,7 +170,7 @@ export async function rejectReclamtion(
             },
         });
         console.log(response);
-        
+
         if (response.status === 403) {
             throw new Error("Unauthorized access. Please log in again.");
         }
@@ -178,7 +205,7 @@ export async function acceptReclamtion(
             },
         });
         console.log(response);
-        
+
         if (response.status === 403) {
             throw new Error("Unauthorized access. Please log in again.");
         }

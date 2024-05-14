@@ -13,7 +13,7 @@ export type Reclamation = {
   sujet: string;
   description: string;
   status: string;
-  documnets: Document[],
+  docs: Document[],
   user: User,
 }
 
@@ -28,7 +28,7 @@ export type CreateReclamationInput = {
   objetId: number;
   sujet: string;
   description: string;
-  docs: File[];
+  docs: File[] | undefined;
 }
 
 export type AddItemInput = {

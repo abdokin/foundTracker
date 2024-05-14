@@ -19,7 +19,7 @@ const FileItem = React.memo(({ file, index, onRemove }: { file: File, index: num
 
 export default function UploadFiles({ field, addFiles }: {
     field: ControllerRenderProps<CreateReclamationInput, 'docs'>,
-    addFiles: (files: File[] | null) => void
+    addFiles: (files: File[]) => void
 }) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [files, setFiles] = useState<File[] | null>(null);
@@ -63,7 +63,7 @@ export default function UploadFiles({ field, addFiles }: {
     };
 
     useEffect(() => {
-        addFiles(files)
+        files && addFiles(files)
     }, [files]);
 
     return (

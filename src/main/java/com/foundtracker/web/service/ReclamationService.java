@@ -56,7 +56,8 @@ public class ReclamationService {
     public ReclamationDto reject(Long reclamationId) {
         Reclamation reclamation = reclamationRepository.findById(reclamationId).orElseThrow();
         reclamation.setStatus(ReclamationStatus.REJECTED);
-        reclamationRepository.save(reclamation);
+        notificationService.send("Reclamation  Rejected", reclamationRepository.save(reclamation));
+
         return ReclamationDto.mapToDto(reclamation);
     }
 
@@ -64,6 +65,8 @@ public class ReclamationService {
         Reclamation reclamation = reclamationRepository.findById(reclamationId).orElseThrow();
         reclamation.setStatus(ReclamationStatus.APPROVED);
         reclamationRepository.save(reclamation);
+        notificationService.send("Reclamation Accepted", reclamation);
+
         return ReclamationDto.mapToDto(reclamation);
     }
 

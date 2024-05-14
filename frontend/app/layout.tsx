@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter ,Roboto} from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
 const inter = Roboto({
   subsets: ['latin'],
@@ -21,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(
+        inter.className,
+        // "container max-w-7xl mx-auto"
+      )}>
         {/* {JSON.stringify(cookies().getAll())} */}
         {children}
         <Toaster position="bottom-right" />

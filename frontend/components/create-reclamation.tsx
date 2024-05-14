@@ -52,14 +52,13 @@ export default function CreateReclamationFrom({
         },
     });
 
-    const addFiles = (docs: File[] | null) => {
-        if (docs && docs.length > 5) {
+    const addFiles = (docs: File[]) => {
+        if (docs.length > 5) {
             toast.error("Max Files allowed is 5 documents");
+            return form.setValue('docs', docs.slice(0, 5));
 
         }
-        // @ts-ignore
-        form.setValue('docs', docs?.slice(0, 5));
-
+        return form.setValue('docs', docs);
     };
 
 
@@ -73,11 +72,9 @@ export default function CreateReclamationFrom({
         formData.append('sujet', values.sujet);
         formData.append('description', values.description);
 
-        values.docs.forEach((doc, index) => {
+        if (values.docs) values.docs.forEach(doc => {
             formData.append(`docs`, doc, doc.name);
         });
-
-        console.log(formData);
 
         const res = await ClaimItem(formData);
         if ('timestamp' in res) {
@@ -164,8 +161,9 @@ export default function CreateReclamationFrom({
                         </div>
                         <SheetFooter className="py-4 mx-auto">
                             <SheetClose asChild>
-                                <Button type="submit">Save changes</Button>
+                                <Button variant={'secondary'} >Close</Button>
                             </SheetClose>
+                            <Button type="submit">Save changes</Button>
                         </SheetFooter>
                     </form>
 

@@ -13,7 +13,7 @@ export default async function DashboardLayout({
   const user: User = JSON.parse(cookies().get("current_user")?.value!!);
   const notifications = await getAllNotifications({
     pageNumber: 0,
-    pageSize: 10
+    pageSize: 30
   });
   return (
     <div className="flex min-h-screen w-full flex-col">
