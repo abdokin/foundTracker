@@ -14,12 +14,20 @@ export default async function Dashboard({
         query?: string;
         page?: number;
         pageSize?: number,
+        status?: string[],
+        date?: Date,
+        name: string,
     };
 }) {
 
     const items = await getAllItems({
         pageNumber: searchParams?.page ?? 0,
         pageSize: searchParams?.pageSize ?? 10,
+    },{
+        status: searchParams?.status,
+        date: searchParams?.date,
+        name: searchParams?.name,
+
     });
     const user: User = JSON.parse(cookies().get("current_user")?.value!!);
     return (

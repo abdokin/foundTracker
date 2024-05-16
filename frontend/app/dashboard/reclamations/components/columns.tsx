@@ -40,15 +40,15 @@ export const columns: ColumnDef<Reclamation>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  // {
-  //   accessorKey: "id",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Reclmation" />
-  //   ),
-  //   cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
+  {
+    accessorKey: "code",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Reclmation" />
+    ),
+    cell: ({ row }) => <div className="w-fit">{row.getValue("code")}</div>,
+    enableSorting: false,
+    enableHiding: false,
+  },
 
 
 

@@ -1,18 +1,24 @@
 package com.foundtracker.web.service;
 
+import com.foundtracker.web.Specification.ItemSpecification;
 import com.foundtracker.web.dto.CreateItemDto;
 import com.foundtracker.web.dto.EditItemDto;
 import com.foundtracker.web.dto.ItemDto;
+import com.foundtracker.web.enums.ItemStatus;
 import com.foundtracker.web.exception.ItemNotFoundException;
 import com.foundtracker.web.model.Image;
 import com.foundtracker.web.model.Item;
 import com.foundtracker.web.repository.ItemRepository;
+
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,7 +28,6 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ImageService imageService;
 
-
     public ItemDto save(CreateItemDto input) throws IOException {
         Item item = CreateItemDto.mapToDto(input);
         itemRepository.save(item);
@@ -31,8 +36,12 @@ public class ItemService {
         return ItemDto.mapToDto(item);
     }
 
-    public Page<ItemDto> findAll(Pageable pageable) {
-        Page<Item> items = itemRepository.findAll(pageable);
+    public Page<ItemDto> findAll(Pageable pageable, String name, ItemStatus[] status, LocalDateTime date) {
+        Specification<Item> filters = Specification
+                .where(StringUtils.isBlank(name) ? null : ItemSpecification.nameLike(name))
+                .and(status == null ? null : ItemSpecification.status(status))
+                .and(date == null ? null : ItemSpecification.foundDateTimeAt(date));
+        Page<Item> items = itemRepository.findAll(filters, pageable);
         return items.<ItemDto>map(ItemDto::mapToDto);
     }
 

@@ -1,9 +1,9 @@
 package com.foundtracker.web.controller;
 
-
 import com.foundtracker.web.dto.CreateItemDto;
 import com.foundtracker.web.dto.EditItemDto;
 import com.foundtracker.web.dto.ItemDto;
+import com.foundtracker.web.enums.ItemStatus;
 import com.foundtracker.web.service.ItemService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/v1/items")
@@ -25,10 +26,12 @@ public class ItemController {
 
     @GetMapping
     public ResponseEntity<Page<ItemDto>> getAllItems(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) ItemStatus[] status,
+            @RequestParam(required = false) LocalDateTime date,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        Page<ItemDto> items = itemService.findAll(PageRequest.of(page, size));
+            @RequestParam(defaultValue = "10") int size) {
+        Page<ItemDto> items = itemService.findAll(PageRequest.of(page, size), name, status, date);
 
         return ResponseEntity.ok(items);
     }
@@ -46,7 +49,7 @@ public class ItemController {
             MediaType.APPLICATION_JSON_VALUE
     })
     public ResponseEntity<ItemDto> editItem(@PathVariable Long id,
-                                   @ModelAttribute @Valid EditItemDto itemDto) {
+            @ModelAttribute @Valid EditItemDto itemDto) {
         return ResponseEntity.ok(itemService.edit(id, itemDto));
     }
 }

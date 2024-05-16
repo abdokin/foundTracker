@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -33,7 +34,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { ClaimItem } from "@/lib/items-management";
+import { createReclamation } from "@/lib/items-management";
 import { useState } from "react";
 
 
@@ -76,7 +77,7 @@ export default function CreateReclamationFrom({
             formData.append(`docs`, doc, doc.name);
         });
 
-        const res = await ClaimItem(formData);
+        const res = await createReclamation(formData);
         if ('timestamp' in res) {
             console.log(res);
 
@@ -101,12 +102,13 @@ export default function CreateReclamationFrom({
 
     return (
         <Sheet onOpenChange={setOpen} open={open} >
-            <SheetTrigger><Button>Claim</Button></SheetTrigger>
-            <SheetContent className="sm:max-w-3xl w-full">
+            <SheetTrigger><Button size={'sm'}>Add reclamation</Button></SheetTrigger>
+            <SheetContent className="sm:max-w-3xl w-full overflow-y-auto max-h-screen">
                 <SheetHeader>
                     <SheetTitle>Create Reclamation</SheetTitle>
                     <SheetDescription>
-                        If you have lost an object and believe it can be recovered, you can create a reclamation to start the process of retrieving your lost item. A reclamation is a formal request or claim made to an authority or organization to assist in finding and returning a lost item to its rightful owner. Please provide accurate details about the lost object to help expedite the search and recovery process.
+                        If you have lost an object and believe it can be recovered, you can create a reclamation to start the process of retrieving your lost item.
+                        Please provide accurate details about the lost object to help expedite the search and recovery process.
                     </SheetDescription>
                 </SheetHeader>
                 <Form {...form}>
@@ -150,6 +152,10 @@ export default function CreateReclamationFrom({
                                     name="docs"
                                     render={({ field }) => (
                                         <FormItem>
+                                            <FormLabel>Attachements</FormLabel>
+                                            <FormDescription>When submitting a reclamation, you can increase its effectiveness by adding attachments.
+                                                Attachments allow you to provide additional context, evidence, or supporting documents
+                                                related to your reclamation. </FormDescription>
                                             <FormControl>
                                                 <UploadFiles field={field} addFiles={addFiles} />
                                             </FormControl>

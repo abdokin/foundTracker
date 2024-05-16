@@ -15,6 +15,7 @@ public class Document {
     @Id
     @GeneratedValue
     private Long id;
+    private String documentName;
     @Column(nullable = false)
     private String documentUrl;
 

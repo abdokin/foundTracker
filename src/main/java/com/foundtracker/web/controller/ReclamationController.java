@@ -42,11 +42,13 @@ public class ReclamationController {
         ReclamationDto reclamation = reclamationService.reject(reclamationId);
         return ResponseEntity.ok(reclamation);
     }
+
     @PostMapping("/{reclamationId}/accept")
     public ResponseEntity<ReclamationDto> acceptReclamation(@PathVariable Long reclamationId) {
         ReclamationDto reclamation = reclamationService.accept(reclamationId);
         return ResponseEntity.ok(reclamation);
     }
+
     @PostMapping(value = "/create", consumes = {
             MediaType.MULTIPART_FORM_DATA_VALUE,
             MediaType.APPLICATION_JSON_VALUE

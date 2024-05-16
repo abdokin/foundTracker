@@ -32,6 +32,12 @@ public class NotificationController {
         return ResponseEntity.ok(notifications);
     }
 
+    @GetMapping("/{notifcationId}/open")
+    public ResponseEntity<NotificationDto> readNotification(@PathVariable int notifcationId) {
+       
+        return ResponseEntity.ok( notificationService.read(notifcationId));
+    }
+
     @GetMapping("/{reclamationId}")
     public ResponseEntity<Page<NotificationDto>> getAllReclamationNotifications(
             @PathVariable Long reclamationId,

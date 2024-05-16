@@ -6,6 +6,8 @@ import { cx } from "class-variance-authority";
 import { Button } from "./ui/button";
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 import CreateReclamationFrom from "./create-reclamation";
+import { Badge } from "./ui/badge";
+import { ClaimItem } from "./claim-item";
 
 export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boolean }) {
     function formatDateForHuman(dateString: string) {
@@ -33,9 +35,9 @@ export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boole
                 <div className="py-2 flex  items-center  justify-between">
                     <h5 className="text-xl text-wrap">{item.name}</h5>
                     <p className="text-base font-light">{formatDateForHuman(item.foundDateTime)}</p>
-                </div>
-                <div className="font-light text-sm pb-4">{item.description.slice(0, 200)}</div>
 
+                </div>
+                <div className="font-light text-sm pb-4">{item.description.slice(0, 200)}  <Badge className="text-xs" variant={'outline'}>{item.status}</Badge></div>
 
                 <div className="flex items-center gap-2">
                     {/* <Link href={`/products/${item.name}`}>
@@ -45,6 +47,8 @@ export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boole
                     </Link> */}
 
                     <CreateReclamationFrom objetId={item.id} />
+                    <ClaimItem objetId={item.id} />
+
                     {isAdmin && <Link href={`/products/${item.name}`}>
                         <Button size={"sm"} variant={'destructive'}>
                             Delete

@@ -11,9 +11,11 @@ export type RegisterInput = {
 export type Reclamation = {
   id: number;
   sujet: string;
+  code: string;
   description: string;
   status: string;
   docs: Document[],
+  item: Item,
   user: User,
 }
 
@@ -52,8 +54,10 @@ export interface ErrorResponse {
 };
 
 export type Notification = {
-  id: string,
+  id: number,
   message: string,
+  sujet: string,
+  opened: boolean,
   receivedAt: string,
 }
 
@@ -77,13 +81,12 @@ export type AuthResponse = {
 export type Image = {
   id: number;
   imageUrl: string;
-  item: null;
 };
 
 export type Document = {
   id: number;
   documentUrl: string;
-  item: null;
+  documentName: string;
 };
 
 export type Item = {
@@ -92,6 +95,13 @@ export type Item = {
   description: string;
   foundDateTime: string;
   images: Image[];
+  status: string
+};
+
+export type ItemFilterType = {
+  name: undefined | string,
+  status: undefined | string[],
+  date: undefined | Date,
 };
 
 export type Pagination = {

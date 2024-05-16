@@ -1,20 +1,41 @@
 "use server"
 import { cookies } from "next/headers";
 import { API_URL } from "./constants";
-import { AddItemInput, ErrorResponse, Item, Page, Pagination, Reclamation } from "./types";
+import { ErrorResponse, Item, ItemFilterType, Page, Pagination, Reclamation } from "./types";
 import assert from "assert";
 import { revalidatePath } from "next/cache";
 
 
 
 export async function getAllItems(
-    values: Pagination
+    values: Pagination,
+    filters: ItemFilterType,
 ): Promise<Page<Item>> {
-    const token = cookies().get("token")
+    const token = cookies().get("token");
+    assert(token && token.value !== ""); // It should always exist
 
-    assert(token && token.value != ""); // it always should exist
+    const queryParams = new URLSearchParams();
+
+    // Add pagination parameters
+    queryParams.append("page", values.pageNumber.toString());
+    queryParams.append("size", values.pageSize.toString());
+
+    // Add filters if they exist
+    if (filters.name !== undefined) {
+        queryParams.append("name", filters.name);
+    }
+    if (filters.date !== undefined) {
+        queryParams.append("date", filters.date.toISOString());
+    }
+    if (filters.status !== undefined && filters.status.length > 0) {
+        // Join the status array into a comma-separated string
+
+        const statusString = Array.isArray(filters.status) ? filters.status.join(",") : filters.status;
+        queryParams.append("status", statusString);
+    }
+
     try {
-        const response = await fetch(API_URL + `/items?page=${values.pageNumber}&size=${values.pageSize}`, {
+        const response = await fetch(API_URL + `/items?${queryParams.toString()}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -36,8 +57,9 @@ export async function getAllItems(
 
 
 
+
 export async function getAllReclamations(
-    values: Pagination
+    values: Pagination,
 ): Promise<Page<Reclamation>> {
     const token = cookies().get("token")
 
@@ -93,7 +115,7 @@ export async function AddItem(values: FormData): Promise<Item | ErrorResponse> {
 }
 
 
-export async function ClaimItem(values: FormData): Promise<{ message: string } | ErrorResponse> {
+export async function createReclamation(values: FormData): Promise<{ message: string } | ErrorResponse> {
     const token = cookies().get("token");
     assert(token && token.value != "");
     try {

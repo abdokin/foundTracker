@@ -10,14 +10,18 @@ import { Notification, Page, User } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { cx } from "class-variance-authority";
 import { NotificationsCenter } from "./user-notifications";
+import NotificationsList from "./notifications-list";
+import ErrorBoundary from "./ErrorBoundry";
 
-export default function NavBar({ user ,notifications}: { user: User ,notifications: Page<Notification>}) {
+
+export default function NavBar({ user, notifications }: { user: User, notifications: Page<Notification> }) {
     const path = usePathname();
 
     const links = [
         { path: "/dashboard", label: "Overview" },
         { path: "/dashboard/items", label: "Items" },
         { path: "/dashboard/reclamations", label: "Reclamations" },
+
     ];
 
     return (
@@ -68,7 +72,9 @@ export default function NavBar({ user ,notifications}: { user: User ,notificatio
                         />
                     </div>
                 </form>
-                <NotificationsCenter notifications={notifications} />
+                <ErrorBoundary>
+                    <NotificationsList notifications={notifications} />
+                </ErrorBoundary>
                 <UserNav user={user} />
             </div>
         </header>

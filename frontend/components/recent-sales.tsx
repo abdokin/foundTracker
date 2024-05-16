@@ -27,7 +27,7 @@ export async function RecentUsers() {
               {user.email}
             </p>
           </div>
-          <div className="ml-auto font-medium">+$1,999.00</div>
+          <div className="ml-auto font-medium">{new Date().toLocaleTimeString()}</div>
         </div>
 
       ))}

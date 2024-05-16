@@ -1,6 +1,5 @@
 package com.foundtracker.web.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +19,12 @@ public class Notification {
     @Id
     @GeneratedValue
     private int id;
-    @Column(nullable = false,length = 300) // MAX len
+    private String sujet;
+    @Column(nullable = false, length = 300)
     private String message;
 
+    @Builder.Default
+    private Boolean opened = false;
     @Builder.Default
     private LocalDateTime receivedAt = LocalDateTime.now();
 
@@ -31,8 +33,7 @@ public class Notification {
     @JsonBackReference
     private Reclamation reclamation;
 
-
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     @JsonBackReference
     public User user;

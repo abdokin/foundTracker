@@ -15,10 +15,12 @@ import lombok.NoArgsConstructor;
 public class DocumentDto {
     private Long id;
     private String documentUrl;
+    private String documentName;
 
     public static DocumentDto mapToDto(Document document) {
         return DocumentDto.builder()
                 .id(document.getId())
+                .documentName(document.getDocumentName())
                 .documentUrl(document.getDocumentUrl())
                 .build();
     }

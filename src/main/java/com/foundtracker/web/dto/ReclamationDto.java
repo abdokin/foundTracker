@@ -20,6 +20,8 @@ public class ReclamationDto {
     private long id;
     private String sujet;
     private String description;
+    private String code;
+    private ItemDto item;
     @Builder.Default
     private ReclamationStatus status = ReclamationStatus.PENDING;
     private UserDto user;
@@ -30,7 +32,9 @@ public class ReclamationDto {
                 .id(reclamation.getId())
                 .status(reclamation.getStatus())
                 .sujet(reclamation.getSujet())
+                .code(reclamation.getCode())
                 .description(reclamation.getDescription())
+                .item(ItemDto.mapToDto(reclamation.getItem()))
                 .user(UserDto.mapToUserDto(reclamation.getUser()))
                 .docs(reclamation.getDocs().stream().map(it -> DocumentDto.mapToDto(it)).toList())
                 .build();

@@ -39,6 +39,17 @@ public class StorageService {
         return urls;
     }
 
+    public String storeFile(MultipartFile file) throws IOException {
+        String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String extension = getFileExtension(originalFilename);
+        String destinationFileName = generateUniqueFilename(extension);
+        Path destinationFilePath = this.storageLocation.resolve(destinationFileName).normalize().toAbsolutePath();
+        try (InputStream inputStream = file.getInputStream()) {
+            Files.copy(inputStream, destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        return destinationFileName;
+    }
+
     private String generateUniqueFilename(String extension) {
         return UUID.randomUUID() + "." + extension;
     }

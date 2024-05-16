@@ -19,10 +19,13 @@ public class Reclamation {
     @Id
     @GeneratedValue
     private long id;
-
+    @Column(nullable = false, unique = true)
+    String code;
     String sujet;
     @Column(nullable = false, length = 300)
     String description;
+
+    
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private ReclamationStatus status = ReclamationStatus.PENDING;

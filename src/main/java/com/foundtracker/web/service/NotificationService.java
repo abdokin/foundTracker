@@ -17,9 +17,10 @@ public class NotificationService {
     private final SimpMessagingTemplate messagingTemplate;
     private final UserService userService;
 
-    public void send(String message, Reclamation reclamation) {
+    public void send(String message, String sujet, Reclamation reclamation) {
         Notification notification = Notification.builder()
                 .message(message)
+                .sujet(sujet)
                 .user(reclamation.user)
                 .reclamation(reclamation)
                 .build();
@@ -34,13 +35,22 @@ public class NotificationService {
     }
 
     public Page<NotificationDto> getCurrentUserNotification(Pageable pageable) {
-        Page<Notification> notifications = notificationRepository.findAllByUser(userService.getCurrentUser(),pageable);
+        Page<Notification> notifications = notificationRepository
+                .findAllByUserOrderByOpened(userService.getCurrentUser(), pageable);
         return notifications.map(NotificationDto::mapToDto);
     }
 
-    public Page<NotificationDto> getReclamationNotification(Pageable pageable,long reclamationId) {
+    public Page<NotificationDto> getReclamationNotification(Pageable pageable, long reclamationId) {
         Page<Notification> notifications = notificationRepository
-                .findByUserAndReclamationId(userService.getCurrentUser(),reclamationId,pageable);
+                .findByUserAndReclamationId(userService.getCurrentUser(), reclamationId, pageable);
         return notifications.map(NotificationDto::mapToDto);
+    }
+
+    public NotificationDto read(int notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow();
+        notification.setOpened(true);
+        notificationRepository.save(notification);
+        return NotificationDto.mapToDto(notification);
+
     }
 }

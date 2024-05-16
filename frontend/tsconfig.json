@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/view-reclamation.tsx", "components/pdf-view.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/view-reclamation.tsx", "components/pdf-view.jsx", "components/ErrorBoundry.jsx"],
   "exclude": ["node_modules"]
 }

@@ -39,7 +39,7 @@ export default function Page() {
                             </svg>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">$45,231.89</div>
+                            <div className="text-2xl font-bold">+45</div>
                             <p className="text-xs text-muted-foreground">
                                 +20.1% from last
                             </p>
@@ -135,7 +135,7 @@ export default function Page() {
                         <CardHeader>
                             <CardTitle>Recent Reclamtions</CardTitle>
                             <CardDescription>
-                                You made 265 sales this month.
+                                {/* You made 265 sales this month. */}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
