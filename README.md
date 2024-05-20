@@ -19,6 +19,21 @@
 ```
     mvn spring-boot:run
 ```
+## On windows 
+```
+    ./mvnw spring-boot:run
+```
+
+### Runing fronend server
+```
+    cd frontend
+```
+```
+    npm run install
+```
+```
+   npm run dev 
+```
 
 ## Important
     1. Update JWT SECRET 
