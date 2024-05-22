@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Reclamation } from "@/lib/types"
+import { Reclamation, User } from "@/lib/types"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { API_URL } from "@/lib/constants"
 import Link from "next/link"
@@ -24,7 +24,7 @@ import {
 import { acceptReclamtion, rejectReclamtion } from "@/lib/items-management"
 import { toast } from "sonner";
 
-export function RecmlamationDetails({ reclamation }: { reclamation: Reclamation }) {
+export function RecmlamationDetails({ reclamation, user }: { reclamation: Reclamation, user: User }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto py-12 px-4">
       <div className="space-y-4">
@@ -71,84 +71,86 @@ export function RecmlamationDetails({ reclamation }: { reclamation: Reclamation 
             </div>
           </div>
         </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold">Attachments</h2>
+        {user.role !== "USER" && <>
           <div className="space-y-2">
-            {reclamation.docs.map((it, index) =>
-              <div key={index} className="flex items-center justify-between border rounded-lg p-4">
-                <div className="flex items-center gap-4">
-                  <FileIcon className="w-6 h-6 text-gray-500" />
-                  <div>
-                    <p className="font-medium">{it.documentName}</p>
+            <h2 className="text-2xl font-bold">Attachments</h2>
+            <div className="space-y-2">
+              {reclamation.docs.map((it, index) =>
+                <div key={index} className="flex items-center justify-between border rounded-lg p-4">
+                  <div className="flex items-center gap-4">
+                    <FileIcon className="w-6 h-6 text-gray-500" />
+                    <div>
+                      <p className="font-medium">{it.documentName}</p>
+                    </div>
                   </div>
+                  <Link target='_blank' href={API_URL + "/files/" + it.documentUrl}>
+                    <Button size="icon" variant="ghost">
+                      <DownloadIcon className="w-5 h-5" />
+                      <span className="sr-only">Download</span>
+                    </Button>
+                  </Link>
                 </div>
-                <Link target='_blank' href={API_URL + "/files/" + it.documentUrl}>
-                  <Button size="icon" variant="ghost">
-                    <DownloadIcon className="w-5 h-5" />
-                    <span className="sr-only">Download</span>
-                  </Button>
-                </Link>
-              </div>
-            )}
+              )}
 
+            </div>
           </div>
-        </div>
-        <div className="flex gap-2 ">
-          {(reclamation.status === "PENDING" || reclamation.status === "APPROVED") && <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant={'destructive'} size={'sm'}>Reject</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete your
-                  account and remove your data from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={async () => {
-                  const res = await rejectReclamtion(reclamation.id);
-                  if ('timestamp' in res) {
-                    toast.error(res.message, {
-                      description: res.timestamp,
-                    });
-                  } else {
-                    toast.success("Reclamation Rejected");
-                  }
-                }}>Continue</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>}
-          {(reclamation.status === "PENDING" || reclamation.status === "REJECTED") && <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button size={'sm'}>Accept</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete your
-                  account and remove your data from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={async () => {
-                  const res = await acceptReclamtion(reclamation.id);
-                  if ('timestamp' in res) {
-                    toast.error(res.message, {
-                      description: res.timestamp,
-                    });
-                  } else {
-                    toast.success("Reclamation Accepted");
-                  }
-                }}>Continue</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>}
-        </div>
+          <div className="flex gap-2 ">
+            {(reclamation.status === "PENDING" || reclamation.status === "APPROVED") && <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant={'destructive'} size={'sm'}>Reject</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete your
+                    account and remove your data from our servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={async () => {
+                    const res = await rejectReclamtion(reclamation.id);
+                    if ('timestamp' in res) {
+                      toast.error(res.message, {
+                        description: res.timestamp,
+                      });
+                    } else {
+                      toast.success("Reclamation Rejected");
+                    }
+                  }}>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>}
+            {(reclamation.status === "PENDING" || reclamation.status === "REJECTED") && <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button size={'sm'}>Accept</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete your
+                    account and remove your data from our servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={async () => {
+                    const res = await acceptReclamtion(reclamation.id);
+                    if ('timestamp' in res) {
+                      toast.error(res.message, {
+                        description: res.timestamp,
+                      });
+                    } else {
+                      toast.success("Reclamation Accepted");
+                    }
+                  }}>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>}
+          </div>
+        </>}
       </div>
     </div>
   )

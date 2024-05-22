@@ -20,5 +20,10 @@
     mvn spring-boot:run
 ```
 
+## run frontend 
+```
+    npm run start
+```
+
 ## Important
     1. Update JWT SECRET 

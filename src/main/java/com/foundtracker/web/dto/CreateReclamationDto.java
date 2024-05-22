@@ -20,6 +20,7 @@ public class CreateReclamationDto {
     private String sujet;
 
     private Long itemId;
+    
 
     @NotNull(message = "Description cannot be null")
     @NotBlank(message = "Description cannot be empty")

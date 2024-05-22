@@ -23,7 +23,7 @@ export default async function Dashboard({
     const items = await getAllItems({
         pageNumber: searchParams?.page ?? 0,
         pageSize: searchParams?.pageSize ?? 10,
-    },{
+    }, {
         status: searchParams?.status,
         date: searchParams?.date,
         name: searchParams?.name,
@@ -33,7 +33,7 @@ export default async function Dashboard({
     return (
         <main className="flex items-start ">
             <ItemFilters />
-            <ListItems items={items} isAdmin={user.role == "RECE"} />
+            <ListItems items={items} isAdmin={user.role !== "USER"} />
         </main >
     )
 }

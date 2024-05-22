@@ -6,6 +6,8 @@ import com.foundtracker.web.enums.ReclamationStatus;
 import com.foundtracker.web.model.Document;
 import com.foundtracker.web.model.Item;
 import com.foundtracker.web.model.Reclamation;
+import com.foundtracker.web.model.Role;
+import com.foundtracker.web.model.User;
 import com.foundtracker.web.repository.DocumentRepository;
 import com.foundtracker.web.repository.ItemRepository;
 import com.foundtracker.web.repository.ReclamationRepository;
@@ -63,12 +65,20 @@ public class ReclamationService {
     }
 
     public ReclamationDto findById(long reclamationId) {
+        User current = userService.getCurrentUser();
+        if (current.getRole().equals(Role.RECEPTIONNAIRE)) {
+            return ReclamationDto.mapToDto(reclamationRepository.findById(reclamationId).orElseThrow());
+        }
         return ReclamationDto.mapToDto(
                 reclamationRepository.findByUserAndId(userService.getCurrentUser(), reclamationId).orElseThrow());
     }
 
     public Page<ReclamationDto> findAll(Pageable pageable) {
-        return reclamationRepository.findAllByUser(userService.getCurrentUser(), pageable)
+        User current = userService.getCurrentUser();
+        if (current.getRole().equals(Role.RECEPTIONNAIRE)) {
+            return reclamationRepository.findAll(pageable).map(ReclamationDto::mapToDto);
+        }
+        return reclamationRepository.findAllByUser(current, pageable)
                 .map(ReclamationDto::mapToDto);
     }
 

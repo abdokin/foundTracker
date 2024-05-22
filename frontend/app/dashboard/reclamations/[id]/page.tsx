@@ -1,11 +1,7 @@
-import { Reclamation } from "@/lib/types";
-import { statuses } from "@/app/dashboard/reclamations/data/data";
-import { cn } from "@/lib/utils";
-import { API_URL } from "@/lib/constants";
-import { useEffect, useState } from "react";
 import { getReclamation } from "@/lib/items-management";
-import ViewReclamation from "@/components/view-reclamation";
 import { RecmlamationDetails } from "@/components/recmlamation-details";
+import { cookies } from "next/headers";
+import { User } from "@/lib/types";
 
 export default async function Page(props: {
   params: {
@@ -13,8 +9,11 @@ export default async function Page(props: {
   }
 }) {
   const reclamation = await getReclamation(props.params.id);
+  const user: User = JSON.parse(cookies().get("current_user")?.value!!);
 
   return (
-    <div className="container "><RecmlamationDetails reclamation={reclamation} /></div>
+    <div className="container ">
+      <RecmlamationDetails reclamation={reclamation} user={user} />
+      </div>
   )
 }

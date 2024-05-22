@@ -10,7 +10,7 @@ export default function ListItems({ items, isAdmin }: { items: Page<Item>, isAdm
         <div className="px-2">
             {items.content.length > 0 && <>
                 <div className="flex justify-end py-4">
-                    <AddItemForm />
+                    {isAdmin && <AddItemForm />}
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
                     {items.content.map(it => <ItemCard key={it.id} item={it} isAdmin={isAdmin} />)}
@@ -24,7 +24,7 @@ export default function ListItems({ items, isAdmin }: { items: Page<Item>, isAdm
                 </div>
             </>}
             {items.content.length == 0 && <div className="p-16">
-                <h1 className="text-xl mx-auto text-center">No Items Found <AddItemForm /></h1>
+                <h1 className="text-xl mx-auto text-center">No Items Found {isAdmin && <AddItemForm />}</h1>
             </div>}
 
         </div>
