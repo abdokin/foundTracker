@@ -48,6 +48,10 @@ public class User implements UserDetails {
     return role.getAuthorities();
   }
 
+  public String getFullName() {
+    return this.firstname + " " + this.lastname;
+  }
+
   @Override
   public String getPassword() {
     return password;

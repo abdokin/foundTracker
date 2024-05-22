@@ -40,15 +40,11 @@ export default function ItemCard({ item, isAdmin }: { item: Item, isAdmin: Boole
                 <div className="font-light text-sm pb-4">{item.description.slice(0, 200)}  <Badge className="text-xs" variant={'outline'}>{item.status}</Badge></div>
 
                 <div className="flex items-center gap-2">
-                    {/* <Link href={`/products/${item.name}`}>
-                        <Button size={"sm"}>
-                            Details
-                        </Button>
-                    </Link> */}
 
                     <CreateReclamationFrom objetId={item.id} />
-                    <ClaimItem objetId={item.id} />
+                    {/* <ClaimItem objetId={item.id} /> */}
 
+                    {/* TODO: implement Delete*/}
                     {isAdmin && <Link href={`/products/${item.name}`}>
                         <Button size={"sm"} variant={'destructive'}>
                             Delete

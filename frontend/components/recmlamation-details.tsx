@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { acceptReclamtion, rejectReclamtion } from "@/lib/items-management"
 import { toast } from "sonner";
+import { Badge } from "./ui/badge"
 
 export function RecmlamationDetails({ reclamation, user }: { reclamation: Reclamation, user: User }) {
   return (
@@ -44,15 +45,20 @@ export function RecmlamationDetails({ reclamation, user }: { reclamation: Reclam
             {reclamation.item.description}
           </p>
           <div className="space-y-2">
+
             <div>
+              <Label htmlFor="subject">Recmalamtion Subject</Label>
+              <Input id="subject" readOnly value={reclamation.sujet} />
+            </div>
+            <div>
+              <Label htmlFor="subject">Recmalamtion Status </Label>
+              <Badge>{reclamation.status}</Badge>
+            </div>
+            <div className="pt-1">
               <Label htmlFor="description">Reclamation Description</Label>
               <Textarea id="description" readOnly rows={3}>
                 {reclamation.description}
               </Textarea>
-            </div>
-            <div>
-              <Label htmlFor="subject">Recmalamtion Subject</Label>
-              <Input id="subject" readOnly value={reclamation.sujet} />
             </div>
           </div>
         </div>
@@ -95,7 +101,7 @@ export function RecmlamationDetails({ reclamation, user }: { reclamation: Reclam
             </div>
           </div>
           <div className="flex gap-2 ">
-            {(reclamation.status === "PENDING" || reclamation.status === "APPROVED") && <AlertDialog>
+            {(reclamation.status === "PENDING") && <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant={'destructive'} size={'sm'}>Reject</Button>
               </AlertDialogTrigger>
@@ -122,7 +128,7 @@ export function RecmlamationDetails({ reclamation, user }: { reclamation: Reclam
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>}
-            {(reclamation.status === "PENDING" || reclamation.status === "REJECTED") && <AlertDialog>
+            {(reclamation.status === "PENDING") && <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button size={'sm'}>Accept</Button>
               </AlertDialogTrigger>
@@ -149,6 +155,12 @@ export function RecmlamationDetails({ reclamation, user }: { reclamation: Reclam
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>}
+
+            {reclamation.status !== "PENDING" &&
+              <Link href={API_URL + "/reclamations/export/" + reclamation.code} target='_blank'>
+                <Button>Print</Button>
+              </Link>
+            }
           </div>
         </>}
       </div>

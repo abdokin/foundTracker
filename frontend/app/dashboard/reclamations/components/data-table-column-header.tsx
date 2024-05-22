@@ -32,7 +32,7 @@ import {
     }
   
     return (
-      <div className={cn("flex items-center space-x-2", className)}>
+      <div className={cn("flex items-center space-x-2 ", className)}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -40,7 +40,7 @@ import {
               size="sm"
               className="-ml-3 h-8 data-[state=open]:bg-accent"
             >
-              <span>{title}</span>
+              <span >{title}</span>
               {column.getIsSorted() === "desc" ? (
                 <ArrowDownIcon className="ml-2 h-4 w-4" />
               ) : column.getIsSorted() === "asc" ? (

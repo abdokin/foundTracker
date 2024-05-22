@@ -11,4 +11,8 @@ import java.util.Optional;
 public interface ReclamationRepository extends JpaRepository<Reclamation, Long> {
     Page<Reclamation> findAllByUser(User user, Pageable pageable);
     Optional<Reclamation> findByUserAndId(User user, Long id);
+    Optional<Reclamation> findByUserAndCode(User user, String code);
+    Optional<Reclamation> findByCode(String code);
+
+
 }

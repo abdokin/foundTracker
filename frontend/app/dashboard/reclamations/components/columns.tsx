@@ -24,7 +24,7 @@ export const columns: ColumnDef<Reclamation>[] = [
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
-        className="translate-y-[2px]"
+        className="translate-y-[2px] bg-white"
       />
     ),
     cell: ({ row }) => (
@@ -55,6 +55,8 @@ export const columns: ColumnDef<Reclamation>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Sujet" />
     ),
+    enableSorting: false,
+    enableHiding: false,
     cell: ({ row }) => {
 
       return (
@@ -71,10 +73,12 @@ export const columns: ColumnDef<Reclamation>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Description" />
     ),
+    enableSorting: false,
+    // enableHiding: false,
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate font-medium">
+          <span className="max-w-[200px] truncate font-medium">
             {row.getValue("description")}
           </span>
         </div>
@@ -86,6 +90,8 @@ export const columns: ColumnDef<Reclamation>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="User" />
     ),
+    enableSorting: false,
+    // enableHiding: false,
     cell: ({ row }) => {
       const user: User = row.getValue('user');
       return (
@@ -145,6 +151,8 @@ export const columns: ColumnDef<Reclamation>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
+    enableSorting: false,
+    enableHiding: false,
     cell: ({ row }) => {
       const status = statuses.find(
         (status) => status.value === row.getValue("status")

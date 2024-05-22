@@ -8,6 +8,7 @@ public enum ReclamationStatus {
     APPROVED("APPROVED"),
     REJECTED("REJECTED");
 
+
     private final String status;
 
      ReclamationStatus(String status) {

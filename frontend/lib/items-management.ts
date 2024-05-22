@@ -148,6 +148,8 @@ export async function createReclamation(values: FormData): Promise<{ message: st
 }
 
 
+
+
 export async function getReclamation(reclamationId: number): Promise<Reclamation> {
     const token = cookies().get("token");
     assert(token && token.value != "");
@@ -175,7 +177,34 @@ export async function getReclamation(reclamationId: number): Promise<Reclamation
         throw error;
     }
 }
+export async function getReclamationByCode(reclamationCode: string): Promise<Reclamation | null> {
+    const token = cookies().get("token");
+    assert(token && token.value != "");
+    // if(reclamationCode === "") return new Promise(() => null)
+    try {
+        const response = await fetch(API_URL + "/reclamations/track/" + reclamationCode, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token?.value}`,
+            },
+        });
+        console.log(response)
 
+        if (!response.ok) {
+            const errorRespose: ErrorResponse = await response.json();
+            throw new Error(errorRespose.message);
+        }
+        if (response.status === 403) {
+            throw new Error("Unauthorized access. Please log in again.");
+        }
+
+        const data: Reclamation = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error during claiming item:", error);
+        return null;
+    }
+}
 export async function rejectReclamtion(
     reclamationId: number
 ): Promise<Reclamation | ErrorResponse> {

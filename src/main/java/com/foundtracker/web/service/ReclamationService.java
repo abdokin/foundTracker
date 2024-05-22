@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,9 @@ public class ReclamationService {
                 .collect(Collectors.toList());
         documentRepository.saveAll(documents);
         reclamation.setDocs(documents);
-        notificationService.send("you reclmation has been created ", "Reclamation Created", reclamation);
+        notificationService.send(
+                "your reclamation has been created with key " + reclamation.getCode(),
+                "Reclamation Created", reclamation);
     }
 
     public ReclamationDto findById(long reclamationId) {
@@ -84,6 +87,8 @@ public class ReclamationService {
 
     public ReclamationDto reject(Long reclamationId) {
         Reclamation reclamation = reclamationRepository.findById(reclamationId).orElseThrow();
+        if (!reclamation.getStatus().equals(ReclamationStatus.PENDING))
+            throw new NoSuchElementException();
         reclamation.setStatus(ReclamationStatus.REJECTED);
         notificationService.send("your reclamation has been rejected", "Reclamation Reject",
                 reclamationRepository.save(reclamation));
@@ -93,6 +98,9 @@ public class ReclamationService {
 
     public ReclamationDto accept(Long reclamationId) {
         Reclamation reclamation = reclamationRepository.findById(reclamationId).orElseThrow();
+        if (reclamation.getStatus().equals(ReclamationStatus.PENDING))
+            throw new NoSuchElementException();
+
         reclamation.setStatus(ReclamationStatus.APPROVED);
         reclamationRepository.save(reclamation);
         notificationService.send(
@@ -108,6 +116,17 @@ public class ReclamationService {
         String datePart = now.toString().replace("-", "").replace(":", "").replace(".", "");
         String randomPart = String.format("%03d", random.nextInt(1000)); // Random 3-digit number
         return datePart + randomPart;
+    }
+
+    public ReclamationDto findByCode(String reclamationCode) {
+        // User current = userService.getCurrentUser();
+        // if (current.getRole().equals(Role.RECEPTIONNAIRE)) {
+        // return ReclamationDto.mapToDto(
+        // reclamationRepository.findByCode(reclamationCode).orElseThrow());
+        // }
+        // TODO : fix it 
+        return ReclamationDto.mapToDto(
+                reclamationRepository.findByCode(reclamationCode).orElseThrow());
     }
 
 }

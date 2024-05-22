@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,7 +59,11 @@ public class GlobalExceptionHandler {
         errorResponse.addValidationError(fieldName, fieldName + " already exists");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
+        return new ResponseEntity<>(ErrorResponse.error("Not Found"), HttpStatus.NOT_FOUND);
 
+    }
     public static String extractFieldName(String errorMessage) {
         Pattern pattern = Pattern.compile("Key \\((.*?)\\)");
         Matcher matcher = pattern.matcher(errorMessage);
