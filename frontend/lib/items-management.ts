@@ -4,6 +4,39 @@ import { API_URL } from "./constants";
 import { ErrorResponse, Item, ItemFilterType, Page, Pagination, Reclamation } from "./types";
 import assert from "assert";
 import { revalidatePath } from "next/cache";
+import { ApplicationStates } from '@/lib/types'
+export async function getMonthlyStates(): Promise<ApplicationStates> {
+    const token = cookies().get("token");
+    assert(token && token.value !== ""); // It should always exist
+
+    try {
+        const response = await fetch(API_URL + `/states/monthly-count`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token?.value}`
+            },
+        });
+        if (response.status === 403) {
+
+            throw new Error("Unauthorized access. Please log in again.");
+        }
+        if (!response.ok) {
+            const errorRespose: ErrorResponse = await response.json();
+            throw new Error(errorRespose.message);
+        }
+        
+        console.log(response)
+
+        const data: ApplicationStates= await response.json();
+
+        return data;
+    } catch (error) {
+        console.error("Error loading items:", error);
+        throw error;
+    }
+}
+
 
 
 
@@ -96,9 +129,7 @@ export async function AddItem(values: FormData): Promise<Item | ErrorResponse> {
             body: values,
         });
 
-        if (response.status === 403) {
-            throw new Error("Unauthorized access. Please log in again.");
-        }
+        
         if (!response.ok) {
             const errorRespose: ErrorResponse = await response.json();
             return errorRespose;

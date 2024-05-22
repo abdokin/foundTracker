@@ -8,7 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Data
@@ -48,6 +52,10 @@ public class Reclamation {
     @OneToMany(mappedBy = "reclamation", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Document> docs;
+
+    @CreatedDate
+    @Builder.Default
+    private LocalDateTime createdAt= LocalDateTime.now();
 
 
 }

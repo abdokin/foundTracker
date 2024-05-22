@@ -3,6 +3,7 @@ package com.foundtracker.web.service;
 import com.foundtracker.web.dto.CreateReclamationDto;
 import com.foundtracker.web.dto.ReclamationDto;
 import com.foundtracker.web.enums.ReclamationStatus;
+import com.foundtracker.web.model.ApplicationStates;
 import com.foundtracker.web.model.Document;
 import com.foundtracker.web.model.Item;
 import com.foundtracker.web.model.Reclamation;
@@ -15,7 +16,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -23,6 +27,9 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.time.Month;
+import java.time.format.TextStyle;
+
 
 @Service
 @RequiredArgsConstructor
@@ -129,4 +136,5 @@ public class ReclamationService {
                 reclamationRepository.findByCode(reclamationCode).orElseThrow());
     }
 
+    
 }

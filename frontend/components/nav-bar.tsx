@@ -22,6 +22,8 @@ export default function NavBar({ user, notifications }: { user: User, notificati
         { path: "/dashboard/items", label: "Items", show: true },
         { path: "/dashboard/reclamations", label: "Reclamations", show: true },
         { path: "/dashboard/reclamations/track", label: "Reclamations Track", show: !isAdmin },
+        { path: "/dashboard/users", label: "Users", show: isAdmin },
+
 
 
     ];

@@ -1,5 +1,7 @@
 package com.foundtracker.web.dto;
 
+import java.time.LocalDateTime;
+
 import com.foundtracker.web.model.Role;
 import com.foundtracker.web.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,12 +31,15 @@ public class UserDto {
     private String email;
     private Role role;
 
+    private LocalDateTime createdAt;
+
     public static UserDto mapToUserDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .firstname(user.getFirstname())
                 .lastname(user.getLastname())
                 .email(user.getEmail())
+                .createdAt(user.getCreatedAt())
                 .role(user.getRole())
                 .build();
     }

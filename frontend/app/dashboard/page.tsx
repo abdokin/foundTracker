@@ -4,9 +4,12 @@ import { RecentUsers } from "@/components/recent-sales"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsTrigger, TabsContent, TabsList } from "@/components/ui/tabs"
+import { getMonthlyStates } from "@/lib/items-management"
 
 
-export default function Page() {
+export default async function Page() {
+    const monthlyStates = await getMonthlyStates();
+
     return (
         <main className="hidden flex-col md:flex">
 
@@ -39,10 +42,7 @@ export default function Page() {
                             </svg>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+45</div>
-                            <p className="text-xs text-muted-foreground">
-                                +20.1% from last
-                            </p>
+                            <div className="text-2xl font-bold">{monthlyStates.totalAcceptedReclamations}</div>
                         </CardContent>
                     </Card>
                     <Card>
@@ -66,10 +66,8 @@ export default function Page() {
                             </svg>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+2350</div>
-                            <p className="text-xs text-muted-foreground">
-                                +180.1% from last month
-                            </p>
+                            <div className="text-2xl font-bold">{monthlyStates.totalRejectedReclamations}</div>
+
                         </CardContent>
                     </Card>
                     <Card>
@@ -90,10 +88,8 @@ export default function Page() {
                             </svg>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+12,234</div>
-                            <p className="text-xs text-muted-foreground">
-                                +19% from last month
-                            </p>
+                            <div className="text-2xl font-bold">{monthlyStates.totalItems}</div>
+
                         </CardContent>
                     </Card>
                     <Card>
@@ -116,32 +112,38 @@ export default function Page() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">+573</div>
-                            <p className="text-xs text-muted-foreground">
-                                +201 since last hour
-                            </p>
+
                         </CardContent>
                     </Card>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
                     <Card className="col-span-4">
                         <CardHeader>
-                            <CardTitle>Overview</CardTitle>
+                            <CardTitle>Overview items monthly</CardTitle>
                         </CardHeader>
                         <CardContent className="pl-2">
-                            <Overview />
+                            <Overview data={monthlyStates.itemMonthlyCount} />
                         </CardContent>
                     </Card>
-                    <Card className="col-span-3">
+
+                    <Card className="col-span-4">
                         <CardHeader>
-                            <CardTitle>Recent Reclamtions</CardTitle>
+                            <CardTitle>Overview Reclamation monthly</CardTitle>
+                        </CardHeader>
+                        <CardContent className="pl-2">
+                            <Overview data={monthlyStates.reclamationonthlyCount} />
+                        </CardContent>
+                    </Card>
+                    {/* <Card className="col-span-8">
+                        <CardHeader>
+                            <CardTitle>Recent Users</CardTitle>
                             <CardDescription>
-                                {/* You made 265 sales this month. */}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <RecentUsers />
                         </CardContent>
-                    </Card>
+                    </Card> */}
                 </div>
             </div>
         </main>

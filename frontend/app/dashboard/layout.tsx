@@ -11,14 +11,19 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }>) {
   const user: User = JSON.parse(cookies().get("current_user")?.value!!);
-  const notifications = await getAllNotifications({
-    pageNumber: 0,
-    pageSize: 30
-  });
+  let notifications= null;
+  try {
+    notifications= await getAllNotifications({
+      pageNumber: 0,
+      pageSize: 30
+    });
+  }catch(e) {
+    
+  }
   return (
     <div className="flex min-h-screen w-full flex-col">
 
-      <NavBar user={user} notifications={notifications} />
+      {notifications && <NavBar user={user} notifications={notifications} />}
 
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col bg-muted/40  p-4">
         {children}

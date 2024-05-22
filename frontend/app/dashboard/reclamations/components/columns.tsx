@@ -8,7 +8,7 @@ import { statuses } from "../data/data"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 import { Checkbox } from "@/components/ui/checkbox"
-import {  Reclamation, User } from "@/lib/types"
+import { Reclamation, User } from "@/lib/types"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
@@ -177,6 +177,23 @@ export const columns: ColumnDef<Reclamation>[] = [
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created At" />
+    ),
+    enableSorting: false,
+    // enableHiding: false,
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="truncate font-medium">
+            {row.getValue("createdAt")}
+          </span>
+        </div>
+      )
     },
   },
   {

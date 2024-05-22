@@ -8,6 +8,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -31,4 +33,7 @@ public class Item {
     @JsonManagedReference
     private List<Image> images;
 
+    @CreatedDate
+    @Builder.Default
+    private LocalDateTime createdAt= LocalDateTime.now();
 }

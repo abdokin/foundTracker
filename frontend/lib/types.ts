@@ -18,6 +18,19 @@ export type Reclamation = {
   item: Item,
   user: User,
 }
+export type State = {
+  name: string;
+  count: number;
+}
+export type ApplicationStates = {
+  totalItems: number;
+  totalReclamations: number;
+  totalAcceptedReclamations: number;
+  totalRejectedReclamations: number;
+  totalUsers: number;
+  itemMonthlyCount: State[];
+  reclamationonthlyCount: State[];
+}
 
 
 export type ResetPasswordInput = {
@@ -70,6 +83,7 @@ export type User = {
   authorities: { authority: string }[];
   isEnabled: boolean;
   enabled: boolean;
+  createdAt: string;
 };
 
 export type AuthResponse = {

@@ -1,5 +1,6 @@
 package com.foundtracker.web.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.foundtracker.web.enums.ReclamationStatus;
@@ -26,6 +27,7 @@ public class ReclamationDto {
     private ReclamationStatus status = ReclamationStatus.PENDING;
     private UserDto user;
     private List<DocumentDto> docs;
+    private LocalDateTime createdAt;
 
     public static ReclamationDto mapToDto(Reclamation reclamation) {
         return ReclamationDto.builder()
@@ -36,6 +38,7 @@ public class ReclamationDto {
                 .description(reclamation.getDescription())
                 .item(ItemDto.mapToDto(reclamation.getItem()))
                 .user(UserDto.mapToUserDto(reclamation.getUser()))
+                .createdAt(reclamation.getCreatedAt())
                 .docs(reclamation.getDocs().stream().map(it -> DocumentDto.mapToDto(it)).toList())
                 .build();
     }

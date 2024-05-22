@@ -3,6 +3,7 @@ package com.foundtracker.web.model;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,7 +35,6 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  
   @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
   @JsonManagedReference
   private List<Notification> notifications;
@@ -82,10 +82,7 @@ public class User implements UserDetails {
     return true;
   }
 
-  @CreatedBy
-  private String createdBy;
-
   @CreatedDate
-  private Instant createdDate;
-
+  @Builder.Default
+  private LocalDateTime createdAt = LocalDateTime.now();
 }
