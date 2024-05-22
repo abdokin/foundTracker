@@ -18,22 +18,25 @@ export default function NavBar({ user, notifications }: { user: User, notificati
     const isAdmin = user.role !== "USER";
 
     const links = [
-        { path: "/dashboard", label: "Overview", show: isAdmin},
+        { path: "/dashboard", label: "Overview", show: isAdmin },
         { path: "/dashboard/items", label: "Items", show: true },
         { path: "/dashboard/reclamations", label: "Reclamations", show: true },
+        { path: "/dashboard/reclamations/track", label: "Reclamations Track", show: true },
+
 
     ];
 
     return (
         <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-primary  px-4 md:px-6  z-10">
-            <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+            <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6 w-full">
                 {links.map((link) => {
-                    return (link.show && <Link key={link.path} href={link.path} className={cx(
-                        path === link.path ? "bg-white px-4 py-2 rounded-md text-primary" : " text-white",
-                        "text-bold text-md transition-all"
-                    )}>
-                        {link.label}
-                    </Link>)
+                    return (link.show &&
+                        <Link key={link.path} href={link.path} className={cx(
+                            path === link.path ? "bg-white px-4 py-2 rounded-md text-primary" : " text-white",
+                            "text-bold text-md transition-all"
+                        )}>
+                            {link.label}
+                        </Link>)
                 }
                 )}
             </nav>
